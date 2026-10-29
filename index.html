@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Particles and Matter Lab</title>
+<style>
+html{color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+
+/* Layout: lab bench, fifth in the series. Name strip + six station tabs; each station is a diagram stage beside a control column (stacks on phones). */
+:root{
+  --bg:#ebf0ee; --surface:#ffffff; --surface-2:#f1f5f3; --ink:#15211d; --muted:#53645d; --line:#c6d3cd;
+  --xa:#0f766e; --xa-soft:#d2eee8; --da:#6b3fbf; --da-soft:#e7def8; --share:#b07800; --share-soft:#f7ebc6;
+  --good:#1f7d48; --good-soft:#d9f0e2; --bad:#b3382f; --bad-soft:#f7dcd8;
+  --el-h:#f6f8f7; --el-c:#3a4440; --el-n:#3a63c4; --el-o:#cf4337; --el-si:#c08a32; --el-cl:#3c974a; --el-br:#9a3a2a; --el-i:#6a3fa0;
+  --el-f:#5f9e3f; --el-s:#b48a12; --el-p:#c96a22; --el-b:#c26d60; --el-be:#6d8231; --el-al:#7d8296; --el-xe:#23808f; --el-se:#9a6f30; --el-na:#7b52bd; --el-mg:#2a8466;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1715; --surface:#17221f; --surface-2:#1d2b27; --ink:#e3ece8; --muted:#94a8a0; --line:#2b3c36;
+  --xa:#4fd1c0; --xa-soft:#133a35; --da:#b496f2; --da-soft:#2c2244; --share:#f0c14b; --share-soft:#3a3016;
+  --good:#62cf91; --good-soft:#15352a; --bad:#f2837a; --bad-soft:#3d1d1b;
+  --el-h:#dfe6e3; --el-c:#8d9a95; --el-n:#7b9cf0; --el-o:#ef6b5f; --el-si:#e0b062; --el-cl:#66c873; --el-br:#d0705e; --el-i:#a785dc; --el-f:#8fd16f; --el-s:#e3c04f; --el-p:#f0995a; --el-b:#e39a8f; --el-be:#a6bb63; --el-al:#aeb3c6; --el-xe:#5cc3d3; --el-se:#cfa261; --el-na:#b496f2; --el-mg:#5cc7a1; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f1715; --surface:#17221f; --surface-2:#1d2b27; --ink:#e3ece8; --muted:#94a8a0; --line:#2b3c36;
+  --xa:#4fd1c0; --xa-soft:#133a35; --da:#b496f2; --da-soft:#2c2244; --share:#f0c14b; --share-soft:#3a3016;
+  --good:#62cf91; --good-soft:#15352a; --bad:#f2837a; --bad-soft:#3d1d1b;
+  --el-h:#dfe6e3; --el-c:#8d9a95; --el-n:#7b9cf0; --el-o:#ef6b5f; --el-si:#e0b062; --el-cl:#66c873; --el-br:#d0705e; --el-i:#a785dc; --el-f:#8fd16f; --el-s:#e3c04f; --el-p:#f0995a; --el-b:#e39a8f; --el-be:#a6bb63; --el-al:#aeb3c6; --el-xe:#5cc3d3; --el-se:#cfa261; --el-na:#b496f2; --el-mg:#5cc7a1; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.page{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 48px;display:grid;gap:22px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand svg{flex:none}
+.eyebrow{margin:0;font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1{margin:2px 0 0;font-family:var(--f-display);font-weight:800;font-size:clamp(1.9rem,4.2vw,2.7rem);line-height:1.02;letter-spacing:-.025em;text-wrap:balance}
+h2{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.06rem;letter-spacing:-.005em}
+p{margin:0}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px}
+.tabs button{font:inherit;font-weight:700;font-size:.92rem;border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:10px;cursor:pointer;display:flex;gap:8px;align-items:baseline}
+.tabs button .n{font-family:var(--f-mono);font-size:.72rem;opacity:.8}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+:focus-visible{outline:3px solid var(--xa);outline-offset:2px}
+[role="tabpanel"]{display:grid;gap:22px}
+.intro{max-width:70ch;color:var(--muted)}
+.intro b{color:var(--ink)}
+.station{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:860px){.station{grid-template-columns:minmax(0,1fr)}}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:12px;min-width:0}
+.stage svg{width:100%;height:auto;display:block;max-width:100%}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.controls{display:grid;gap:20px;min-width:0}
+.ctl{display:grid;gap:9px;min-width:0}
+.small{font-size:.88rem;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.btn{font:inherit;font-weight:700;font-size:.93rem;padding:9px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.2}
+.btn:hover:not(:disabled){border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-width:46px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.ans-right{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
+.chip.ans-wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--ink)}
+.grouplbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden;max-width:100%;width:max-content}
+.seg button{font:inherit;font-weight:700;border:0;background:var(--surface);color:var(--muted);padding:8px 14px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.pill{display:inline-block;padding:3px 11px;border-radius:999px;font-weight:700;font-size:.82rem;background:var(--surface-2);border:1px solid var(--line)}
+.pill.on{background:var(--good-soft);border-color:var(--good)}
+.pill.warn{background:var(--share-soft);border-color:var(--share)}
+.verdict{border-radius:var(--r);padding:12px 14px;background:var(--surface);border:1px solid var(--line);display:grid;gap:4px}
+.verdict.good{background:var(--good-soft);border-color:var(--good)}
+.verdict.bad{background:var(--bad-soft);border-color:var(--bad)}
+.verdict strong{font-family:var(--f-display);font-size:1.08rem;font-weight:600}
+details.explain{border-top:1px solid var(--line);padding-top:10px}
+details.explain summary{cursor:pointer;font-weight:700}
+details.explain p{margin-top:6px;color:var(--muted);max-width:62ch}
+.msg{font-size:.92rem;min-height:1.4em}
+.msg.good{color:var(--good)} .msg.bad{color:var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.84rem;color:var(--muted)}
+.legend .lx{color:var(--xa);font-weight:700;font-family:var(--f-mono)}
+.legend .ld{color:var(--da);font-weight:700;font-family:var(--f-mono)}
+.legend .ls{display:inline-block;width:14px;height:10px;border-radius:5px;background:var(--share-soft);border:1px solid var(--share);vertical-align:-1px;margin-right:4px}
+sub,sup{font-size:.68em;line-height:0}
+/* svg text + shapes */
+.t-sym{fill:var(--ink);font-family:var(--f-display);font-weight:800}
+.t-ink{fill:var(--ink);font-family:var(--f-mono)}
+.t-muted{fill:var(--muted);font-family:var(--f-mono)}
+.shell{fill:none;stroke:var(--muted);stroke-width:1.6}
+.shell.full{stroke:var(--good);stroke-width:2.2}
+.lens{fill:var(--share-soft);stroke:none}
+.x-a{stroke:var(--xa);stroke-width:2.6;stroke-linecap:round;fill:none}
+.d-b{fill:var(--da)}
+.bondline{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+
+/* station 2 + 3 canvases */
+.caption{font-size:.95rem;max-width:70ch}
+.slider{position:relative}
+.slider input{width:100%;accent-color:var(--xa);margin:0}
+.scale{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:center;font-weight:700;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--ink);margin:0}
+.findings{display:grid;gap:8px}
+.finding{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.finding .ft{font-weight:700}
+.finding .fd{grid-column:1/-1;font-size:.88rem;color:var(--muted)}
+.finding .st{font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid var(--line);align-self:start;white-space:nowrap}
+.finding.found{border-color:var(--good)}
+.finding.found .st{background:var(--good-soft);border-color:var(--good)}
+.strip-wrap{overflow-x:auto}
+#stripSvg{width:100%;min-width:300px;height:auto;display:block}
+.props{display:grid;gap:8px}
+.prop{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:4px 12px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.prop .pk{font-weight:700}
+.prop .pv{color:var(--muted);font-size:.92rem}
+.prop.known .pv{color:var(--ink)}
+@media (max-width:420px){.prop{grid-template-columns:minmax(0,1fr)}}
+/* station 4 */
+.sortbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.score{font-family:var(--f-display);font-weight:800;font-size:1.4rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:10px;align-content:start}
+.card.right{border-color:var(--good)}
+.card.wrong{border-color:var(--bad)}
+.card h3{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+.card dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;font-size:.88rem}
+.card .els{font-size:.86rem;color:var(--muted);margin-top:-6px}
+.card dt{color:var(--muted)}
+.card dd{margin:0;font-family:var(--f-mono);font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.card .choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.card .choices button{font:inherit;font-size:.8rem;font-weight:700;padding:7px 4px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;line-height:1.15}
+.card .choices button:hover:not(:disabled){border-color:var(--ink)}
+.card .choices button:disabled{cursor:default}
+.card .choices button.right{background:var(--good-soft);border-color:var(--good)}
+.card .choices button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.card .why{font-size:.88rem;color:var(--muted)}
+.card .why b{color:var(--ink)}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table.cmp{border-collapse:collapse;width:100%;min-width:620px;font-size:.92rem}
+table.cmp th,table.cmp td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.cmp thead th{font-family:var(--f-display);font-weight:600;background:var(--surface-2)}
+table.cmp tbody th{font-weight:700;color:var(--muted);width:22%}
+table.cmp tr:last-child td,table.cmp tr:last-child th{border-bottom:0}
+/* quiz */
+.quizbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;max-width:860px}
+.quiz{display:grid;gap:14px;max-width:860px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:10px}
+.q .qn{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);font-weight:700}
+.q .qt{font-weight:700;font-size:1.02rem}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.opts{grid-template-columns:minmax(0,1fr)}}
+.opt{font:inherit;text-align:left;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--good-soft);border-color:var(--good);font-weight:700}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.fb{font-size:.92rem;color:var(--muted)}
+.fb b{color:var(--ink)}
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;max-width:95ch}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+
+/* bonding lab */
+.formula-big{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,5vw,3rem);line-height:1;letter-spacing:-.01em}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:860px){.two{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.panel h2 .small,.ctl h2 .small{font-family:var(--f-body);font-weight:400}
+.panel svg{width:100%;height:auto;display:block;max-width:100%}
+.result{display:grid;gap:2px;border-radius:var(--r);padding:10px 12px;background:var(--surface-2);border:1px solid var(--line);min-width:0}
+.result .rv{font-family:var(--f-display);font-weight:800;font-size:1.25rem;line-height:1.15;overflow-wrap:anywhere}
+.result .rl{font-size:.72rem;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.result.hl{background:var(--xa-soft);border-color:var(--xa)}
+ol.steps{margin:0;padding:0;list-style:none;display:grid;gap:7px;counter-reset:st}
+ol.steps li{counter-increment:st;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+ol.steps li::before{content:counter(st);grid-row:span 2;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:.8rem;font-family:var(--f-mono)}
+ol.steps .sh{font-weight:700}
+ol.steps .sm{font-size:.9rem;color:var(--muted);overflow-wrap:anywhere}
+.cv{width:100%;max-width:100%;display:block;border-radius:8px;background:var(--surface-2);touch-action:none;cursor:grab;aspect-ratio:4/3}
+.cv:active{cursor:grabbing}
+.cv.wide{aspect-ratio:16/10;cursor:default}
+.cvwrap{position:relative}
+.cvcover{position:absolute;inset:0;display:grid;place-items:center;border-radius:8px;background:color-mix(in srgb,var(--surface-2) 88%,transparent);font-family:var(--f-display);font-weight:800;font-size:clamp(1.2rem,3vw,1.6rem);color:var(--muted);text-align:center;padding:16px}
+.inrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.inrow label{font-weight:700;min-width:8.5em}
+select.num,.num{font:inherit;font-family:var(--f-mono);font-size:.95rem;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-width:0;max-width:100%}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.stepper button{font:inherit;font-weight:800;width:34px;height:34px;border:0;background:var(--surface-2);color:var(--ink);cursor:pointer}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:2.2em;text-align:center;font-family:var(--f-mono);font-weight:700}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--share-soft);border:1px solid var(--share);color:var(--ink);vertical-align:2px;margin-left:6px}
+.s-txt{fill:var(--ink);font-family:var(--f-mono);font-size:13px}
+.s-mut{fill:var(--muted);font-family:var(--f-mono);font-size:12px}
+.s-head{fill:var(--ink);font-family:var(--f-display);font-weight:600;font-size:15px}
+.s-sym{fill:var(--ink);font-family:var(--f-display);font-weight:800}
+.s-onfill{fill:#fff;font-family:var(--f-display);font-weight:800}
+.dlt{fill:var(--da);font-family:var(--f-mono);font-weight:700}
+.dlt.pos{fill:var(--xa)}
+.ebar{fill:var(--surface-2);stroke:var(--line)}
+.tiles .t-cat{fill:var(--xa-soft);stroke:var(--xa);stroke-width:1.5}
+.tiles .t-an{fill:var(--da-soft);stroke:var(--da);stroke-width:1.5}
+.grid13{display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr));gap:6px;font-size:.84rem}
+.grid13 .gh{font-weight:700;color:var(--muted);font-size:.74rem;align-self:end;text-align:center}
+.grid13 .gr{font-weight:700;color:var(--muted);font-size:.74rem;align-self:center;white-space:nowrap}
+.grid13 button{font:inherit;font-size:.8rem;line-height:1.2;text-align:center;padding:7px 4px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer;min-height:48px}
+.grid13 button.found{background:var(--xa-soft);border-color:var(--xa);color:var(--ink);font-weight:700}
+.grid13 button.found span{display:block;font-weight:400;font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.grid13 .na{border:1px dashed var(--line);border-radius:7px;min-height:48px}
+.tablewrap{overflow-x:auto}
+.ticks{display:grid;gap:6px}
+.vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:stretch}
+.vs .or{align-self:center;font-weight:800;color:var(--muted);font-family:var(--f-display)}
+.vsbtn{font:inherit;text-align:left;padding:12px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;display:grid;gap:3px;min-width:0}
+.vsbtn b{font-family:var(--f-display);font-size:1.15rem}
+.vsbtn .small{overflow-wrap:anywhere}
+.vsbtn:hover:not(:disabled){border-color:var(--ink)}
+.vsbtn:disabled{cursor:default}
+.vsbtn.right{background:var(--good-soft);border-color:var(--good)}
+.vsbtn.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.vsbtn .bpv{font-family:var(--f-mono);font-weight:700}
+#bpChart,#fxSvg,#vdwSvg,#dbSvg,#ibSvg,#bpSvg{width:100%;height:auto;display:block;max-width:100%}
+.chips.sm .chip{min-width:0;padding:5px 10px;font-size:.9rem}
+.bp-pt{cursor:pointer}
+.chip[aria-pressed="true"] .small{color:inherit;opacity:.75}
+.card dl{grid-template-columns:minmax(0,1fr) minmax(0,max-content)}
+.card dd{overflow-wrap:anywhere}
+.panel{grid-template-columns:minmax(0,1fr)}
+.panel .seg{width:auto}
+.panel>.pill{justify-self:start}
+.s-lab{fill:var(--ink);font-family:var(--f-body);font-size:14px}
+#bpChart{min-width:600px}
+/* particles lab */
+:root{--p-water:#2f6fc4;--p-ice:#6fa6dd;--p-n2:#7f8e88;--p-o2:#cf4337;--p-salt:#9aa6ad;--p-sugar:#c8925a;--p-sand:#c09325;--p-ink:#7b3fbf;--p-red:#d0443a;--p-yellow:#d9b21c;--p-blue:#2f6fc4;--p-green:#2f9a55;--p-iron:#3f4950;--p-nh3:#3a63c4;--p-hcl:#3c974a;--p-ring:#ffffff;--glass:#9bb0aa}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--p-water:#5c9ef0;--p-ice:#9cc6f0;--p-n2:#a7b5b0;--p-o2:#ef6b5f;--p-salt:#c9d2d6;--p-sugar:#e0ad78;--p-sand:#e0b74a;--p-ink:#b496f2;--p-red:#f2837a;--p-yellow:#f0cf4b;--p-blue:#5c9ef0;--p-green:#62cf91;--p-iron:#9aa6ad;--p-nh3:#7b9cf0;--p-hcl:#66c873;--p-ring:#ffffff;--glass:#6d827c}}
+:root[data-theme="dark"]{--p-water:#5c9ef0;--p-ice:#9cc6f0;--p-n2:#a7b5b0;--p-o2:#ef6b5f;--p-salt:#c9d2d6;--p-sugar:#e0ad78;--p-sand:#e0b74a;--p-ink:#b496f2;--p-red:#f2837a;--p-yellow:#f0cf4b;--p-blue:#5c9ef0;--p-green:#62cf91;--p-iron:#9aa6ad;--p-nh3:#7b9cf0;--p-hcl:#66c873;--p-ring:#ffffff;--glass:#6d827c}
+.cv.w16{aspect-ratio:16/10;cursor:default}
+.cv.w2{aspect-ratio:2/1;cursor:default}
+.cv.w3{aspect-ratio:3/1;cursor:default}
+.cv.w4{aspect-ratio:15/4;cursor:default}
+.cv.sq{aspect-ratio:1/1;cursor:default}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mini .result .rv{font-size:1.05rem}
+.logbox{display:flex;flex-wrap:wrap;gap:6px}
+.logbox .pill{font-size:.8rem}
+table.facts{border-collapse:collapse;width:100%;font-size:.92rem}
+table.facts th,table.facts td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.facts thead th{font-family:var(--f-display);font-weight:600;background:var(--surface-2)}
+table.facts tbody th{color:var(--muted);font-weight:700;width:26%}
+table.facts td.q{color:var(--muted)}
+table.facts td.y{color:var(--good);font-weight:700}
+table.facts td.n{color:var(--bad);font-weight:700}
+.sortgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.scard{border:1px solid var(--line);border-radius:8px;background:var(--surface-2);padding:9px 10px;display:grid;gap:6px;align-content:start}
+.scard b{font-family:var(--f-display);font-weight:600}
+.scard .row button{font:inherit;font-size:.8rem;font-weight:700;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.scard.right{border-color:var(--good);background:var(--good-soft)}
+.scard.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.scard .why{font-size:.82rem;color:var(--muted)}
+.big{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,3.5vw,2.2rem);line-height:1}
+.seg.wrap{flex-wrap:wrap}
+.tbl-sm{border-collapse:collapse;width:100%;font-size:.88rem;font-variant-numeric:tabular-nums}
+.tbl-sm th,.tbl-sm td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.tbl-sm th{color:var(--muted);font-size:.74rem;letter-spacing:.04em}
+#sepSvg,#chromSvg,#pumpSvg{width:100%;height:auto;display:block;max-width:100%}
+@media (max-width:560px){table.facts{font-size:.84rem}table.facts th,table.facts td{padding:6px 5px}}
+
+.phone-only{display:none}
+.solchart{display:grid;gap:6px}
+.solchart h3{margin:0;font:700 .9rem var(--f-body)}
+.solchart .sr{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:.85rem}
+.solchart .sr.sel{font-weight:700}
+.solchart .bar{height:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.solchart .bar i{display:block;height:100%}
+.solchart .v{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+@media (max-width:560px){.phone-only{display:grid}#dsCanvas{aspect-ratio:1/1}
+  #sepSvg .s-lab{font-size:19px}#sepSvg .s-mut{font-size:16px}#chromSvg .s-txt,#chromSvg .s-mut{font-size:20px}#chromSvg .s-head{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="brand">
+      <svg width="56" height="48" viewBox="0 0 56 48" aria-hidden="true">
+        <rect x="4" y="8" width="48" height="34" rx="6" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".55"/>
+        <circle cx="14" cy="34" r="4.5" fill="var(--p-water)"/><circle cx="23" cy="34" r="4.5" fill="var(--p-water)"/><circle cx="32" cy="34" r="4.5" fill="var(--p-water)"/>
+        <circle cx="18.5" cy="26" r="4.5" fill="var(--p-water)"/><circle cx="27.5" cy="26" r="4.5" fill="var(--p-water)"/>
+        <circle cx="42" cy="17" r="4.5" fill="var(--p-water)" opacity=".7"/><circle cx="33" cy="14" r="3" fill="var(--p-water)" opacity=".5"/>
+      </svg>
+      <div>
+        <p class="eyebrow">Year 7 Science · Particles and matter</p>
+        <h1>Particles and Matter Lab</h1>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Lab stations">
+      <button role="tab" id="tab-matter" aria-controls="p-matter" aria-selected="true"><span class="n">1</span>What is matter?</button>
+      <button role="tab" id="tab-states" aria-controls="p-states" aria-selected="false" tabindex="-1"><span class="n">2</span>Solids, liquids, gases</button>
+      <button role="tab" id="tab-change" aria-controls="p-change" aria-selected="false" tabindex="-1"><span class="n">3</span>Changes of state</button>
+      <button role="tab" id="tab-diffuse" aria-controls="p-diffuse" aria-selected="false" tabindex="-1"><span class="n">4</span>Diffusion</button>
+      <button role="tab" id="tab-dissolve" aria-controls="p-dissolve" aria-selected="false" tabindex="-1"><span class="n">5</span>Dissolving</button>
+      <button role="tab" id="tab-separate" aria-controls="p-separate" aria-selected="false" tabindex="-1"><span class="n">6</span>Separating mixtures</button>
+      <button role="tab" id="tab-quiz" aria-controls="p-quiz" aria-selected="false" tabindex="-1"><span class="n">7</span>Quiz</button>
+    </nav>
+  </header>
+
+  <!-- 1 MATTER -->
+  <section id="p-matter" role="tabpanel" aria-labelledby="tab-matter">
+    <p class="intro"><b>Matter</b> is anything that has <b>mass</b> and takes up <b>space</b>. All matter is made of tiny <b>particles</b>, far too small to see, even with a microscope. The particles are always moving.</p>
+    <div class="station">
+      <div class="stage">
+        <div class="stage-head"><span class="big" id="zmName">Ice cube</span><span class="pill" id="zmMag">Magnified 1×</span></div>
+        <canvas class="cv w16" id="zmCanvas" aria-label="Zooming in on a substance until its particles can be seen"></canvas>
+        <p class="caption" id="zmCap"></p>
+      </div>
+      <div class="controls">
+        <div class="ctl"><h2>Pick something to zoom into</h2><div class="chips sm" id="zmPick"></div></div>
+        <div class="ctl"><h2>Zoom in <span class="small">· drag the slider</span></h2>
+          <div class="slider"><input type="range" id="zmZoom" min="0" max="100" value="0" aria-label="Zoom level"></div>
+          <div class="scale"><span>1×</span><span>1 000×</span><span>1 000 000 000×</span></div>
+        </div>
+        <details class="explain"><summary>How small is a particle?</summary><p>If an ice cube was made as big as the Earth, each of its particles would be about the size of a grape. Particles are so small that one drop of water contains more than a thousand million million million of them.</p></details>
+      </div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <div class="sortbar"><h2>Is it matter?</h2><span class="score" id="mtScore">0 / 10</span></div>
+        <p class="small">Ask: does it have mass? Does it take up space?</p>
+        <div class="sortgrid" id="mtCards"></div>
+      </div>
+      <div class="panel">
+        <h2>Does air have mass? <span class="small">· pump up a football</span></h2>
+        <svg id="pumpSvg" viewBox="0 0 520 260" role="img" aria-label="A football on a balance with a pump"></svg>
+        <div class="row"><button class="btn primary" id="pmPump">Pump in air</button><button class="btn" id="pmLet">Let the air out</button></div>
+        <p class="caption" id="pmCap">Predict: will the mass go up, go down or stay the same when you pump in air?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 STATES -->
+  <section id="p-states" role="tabpanel" aria-labelledby="tab-states" hidden>
+    <p class="intro">The <b>particle model</b> explains solids, liquids and gases. The particles are the same in all three states: what changes is how they are <b>arranged</b>, how they <b>move</b> and how strongly they <b>attract</b> each other.</p>
+    <div class="stage">
+      <canvas class="cv w2" id="stCanvas" aria-label="Particles in a solid, a liquid and a gas"></canvas>
+      <div class="row"><button class="btn primary" id="stSquash">Squash them</button><button class="btn primary" id="stPour">Pour into a wide container</button><button class="btn" id="stReset">Reset</button></div>
+      <p class="caption" id="stCap">Predict first: which state can be squashed? Which ones change shape when you pour them? Then try it.</p>
+    </div>
+    <div class="two">
+      <div class="panel"><h2>What you have found out</h2><div class="tablewrap"><table class="facts" id="stProps"></table></div></div>
+      <div class="panel"><h2>The particles in each state</h2><div class="tablewrap"><table class="facts">
+        <thead><tr><th></th><th>Solid</th><th>Liquid</th><th>Gas</th></tr></thead>
+        <tbody><tr><th>Arrangement</th><td>regular rows, touching</td><td>random, touching</td><td>random, far apart</td></tr>
+        <tr><th>Movement</th><td>vibrate in fixed places</td><td>move past each other</td><td>move fast in all directions</td></tr>
+        <tr><th>Attraction</th><td>strong</td><td>weaker</td><td>almost none</td></tr></tbody></table></div></div>
+    </div>
+  </section>
+
+  <!-- 3 CHANGE -->
+  <section id="p-change" role="tabpanel" aria-labelledby="tab-change" hidden>
+    <p class="intro">Heating gives particles more energy. At the <b>melting point</b> they break free of their fixed places; at the <b>boiling point</b> they escape from each other completely. While a substance changes state, its temperature <b>stays the same</b>. Changes of state are reversible, and the <b>mass stays the same</b> because no particles are made or lost.</p>
+    <div class="station">
+      <div class="stage">
+        <div class="stage-head"><span class="big" id="chT">−20 °C</span><span class="pill" id="chState">Solid</span></div>
+        <canvas class="cv w16" id="chCanvas" aria-label="Particles in a container beside a live temperature graph"></canvas>
+        <p class="caption" id="chCap"></p>
+      </div>
+      <div class="controls">
+        <div class="ctl"><h2>Pick a substance</h2><div class="chips sm" id="chPick"></div></div>
+        <div class="ctl"><h2>Heat or cool it</h2><div class="seg" id="chMode"><button data-m="1" aria-pressed="false">Heat</button><button data-m="0" aria-pressed="true">Pause</button><button data-m="-1" aria-pressed="false">Cool</button></div>
+          <div class="row"><button class="btn" id="chReset">Start again</button><label class="check"><input type="checkbox" id="chSeal" checked>Container sealed</label></div></div>
+        <div class="ctl"><h2>Mass on the balance</h2><span class="big" id="chMass">50.0 g</span><span class="small" id="chMassNote">Sealed: no particles can get in or out.</span></div>
+        <div class="ctl"><h2>Changes you have seen</h2><div class="logbox" id="chLog"><span class="small">None yet. Press Heat.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 DIFFUSION -->
+  <section id="p-diffuse" role="tabpanel" aria-labelledby="tab-diffuse" hidden>
+    <p class="intro"><b>Diffusion</b> is the spreading out of particles from where there are lots of them to where there are fewer. It happens because particles move about randomly. It is faster in gases than in liquids, and faster when it is hotter.</p>
+    <div class="station">
+      <div class="stage">
+        <div class="stage-head"><span class="big" id="dfPct">0%</span><span class="pill" id="dfTime">0.0 s</span></div>
+        <canvas class="cv w2" id="dfCanvas" aria-label="Purple particles spreading out after a barrier is removed"></canvas>
+        <p class="caption" id="dfCap">Purple particles on the right-hand side. When they are fully mixed it will be about 50%.</p>
+      </div>
+      <div class="controls">
+        <div class="ctl"><h2>Choose</h2><div class="seg" id="dfMode"><button data-m="gas" aria-pressed="true">Perfume in air (gas)</button><button data-m="liq" aria-pressed="false">Ink in water (liquid)</button></div></div>
+        <div class="ctl"><h2>Temperature</h2><div class="seg" id="dfTemp"><button data-t="0.55" aria-pressed="false">Cold</button><button data-t="1" aria-pressed="true">Room</button><button data-t="1.6" aria-pressed="false">Hot</button></div></div>
+        <div class="row"><button class="btn primary" id="dfGo">Lift the barrier</button><button class="btn" id="dfReset">Reset</button></div>
+        <div class="ctl"><h2>Your results <span class="small">· time to reach 30% on the right</span></h2><table class="tbl-sm"><thead><tr><th>State</th><th>Temperature</th><th>Time (s)</th></tr></thead><tbody id="dfRes"><tr><td colspan="3" class="small">Run it to add a result.</td></tr></tbody></table></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Challenge: the white ring <span class="small">· ammonia meets hydrogen chloride</span></h2>
+      <p class="small">Ammonia particles are lighter than hydrogen chloride particles. When they meet, they make a white solid. <b>Predict first:</b> where will the white ring form?</p>
+      <div class="chips sm" id="nhPred"><button class="chip" data-p="nh3">Nearer the ammonia end</button><button class="chip" data-p="mid">In the middle</button><button class="chip" data-p="hcl">Nearer the hydrogen chloride end</button></div>
+      <canvas class="cv w4" id="nhCanvas" aria-label="A long tube with ammonia at one end and hydrogen chloride at the other"></canvas>
+      <div class="row"><button class="btn primary" id="nhGo">Start</button><button class="btn" id="nhReset">Reset</button></div>
+      <p class="caption" id="nhCap"></p>
+    </div>
+  </section>
+
+  <!-- 5 DISSOLVE -->
+  <section id="p-dissolve" role="tabpanel" aria-labelledby="tab-dissolve" hidden>
+    <p class="intro">A <b>pure substance</b> contains only one substance. A <b>mixture</b> contains two or more substances that are not joined together. When a <b>solute</b> dissolves in a <b>solvent</b> it makes a <b>solution</b>. The solute particles spread out between the solvent particles: they do not disappear, so the <b>mass stays the same</b>.</p>
+    <div class="station">
+      <div class="stage">
+        <div class="stage-head"><span class="big" id="dsTotal">100 g</span><span class="pill" id="dsState">Pure water</span></div>
+        <canvas class="cv w16" id="dsCanvas" aria-label="Solute particles dissolving among water particles in a beaker on a balance"></canvas>
+        <p class="caption" id="dsCap"></p>
+      </div>
+      <div class="controls">
+        <div class="ctl"><h2>Pick a solid to add <span class="small">· to 100 g of water at 20 °C</span></h2><div class="chips sm" id="dsPick"></div></div>
+        <div class="row"><button class="btn primary" id="dsAdd">Add 10 g</button><button class="btn" id="dsAdd50">Add 50 g</button><button class="btn" id="dsStir">Stir</button><button class="btn" id="dsReset">Empty the beaker</button></div>
+        <div class="mini" id="dsRead"></div>
+        <div class="phone-only solchart" id="dsSol"></div>
+        <details class="explain"><summary>Key words</summary><p><b>Solute:</b> the substance that dissolves. <b>Solvent:</b> the liquid it dissolves in. <b>Solution:</b> the mixture they make. <b>Soluble:</b> it can dissolve. <b>Insoluble:</b> it cannot dissolve. <b>Saturated:</b> no more solute will dissolve.</p></details>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="sortbar"><h2>Pure substance or mixture?</h2><span class="score" id="pmScore">0 / 8</span></div>
+      <div class="sortgrid" id="pmCards"></div>
+    </div>
+  </section>
+
+  <!-- 6 SEPARATE -->
+  <section id="p-separate" role="tabpanel" aria-labelledby="tab-separate" hidden>
+    <p class="intro">Mixtures can be separated because their substances have different properties. Pick a mixture, then choose the method you think will work. If it is wrong, you will find out why.</p>
+    <div class="station">
+      <div class="stage">
+        <div class="stage-head"><span class="big" id="spName">Sand and water</span><span class="pill" id="spPill">Choose a method</span></div>
+        <svg id="sepSvg" viewBox="0 0 600 380" role="img" aria-label="Separation apparatus"></svg>
+        <p class="caption" id="spCap"></p>
+      </div>
+      <div class="controls">
+        <div class="ctl"><h2>1. Pick a mixture</h2><div class="chips sm" id="spMix"></div></div>
+        <div class="ctl"><h2>2. Choose a method</h2><div class="chips sm" id="spMeth"></div></div>
+        <div class="verdict" id="spOut" aria-live="polite"><span class="small">What do you want to get out of the mixture? Think about which substance dissolves, which is magnetic, and which boils first.</span></div>
+        <div class="row"><span class="pill" id="spScore">0 / 6 solved</span><button class="btn" id="spReplay">Replay</button></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Chromatography: what colours are in the ink?</h2>
+      <svg id="chromSvg" viewBox="0 0 640 340" role="img" aria-label="Chromatography paper with spots of ink"></svg>
+      <div class="row"><button class="btn primary" id="crGo">Dip the paper in water</button><button class="btn" id="crReset">Reset</button><label class="check"><input type="checkbox" id="crRf">Show Rf values (challenge)</label></div>
+      <div class="chips sm" id="crAns" aria-label="Which dyes are in the felt-tip pen?"></div>
+      <p class="caption" id="crCap">Mystery felt-tip pen X and four known dyes. Run the paper, then tick the dyes you think are in X.</p>
+    </div>
+  </section>
+
+  <!-- 7 QUIZ -->
+  <section id="p-quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="quizbar"><p class="intro">Twelve questions on the whole topic. Read each answer carefully: the wrong ones are common mistakes.</p><div class="row"><span class="score" id="score">0 / 12</span><button class="btn" id="quizReset">Start again</button></div></div>
+    <div class="quiz" id="quiz"></div>
+  </section>
+
+  <footer>Particle pictures are models: real particles are far smaller and there are far more of them. Melting and boiling points at normal air pressure: water 0 °C and 100 °C; carbon dioxide (dry ice) changes straight from solid to gas at −78 °C. Solubility in 100 g of water at 20 °C: salt about 36 g, sugar about 200 g. The heating graph is a model: heating times are shortened.</footer>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const NS = 'http://www.w3.org/2000/svg';
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(tag, attrs, parent, text){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(text!=null) e.textContent=text; if(parent) parent.appendChild(e); return e; }
+const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function sizeCv(cv){ const r=cv.getBoundingClientRect(); if(!r.width||!r.height) return false; const d=Math.min(2,window.devicePixelRatio||1), w=Math.round(r.width*d), h=Math.round(r.height*d); if(cv.width!==w||cv.height!==h){ cv.width=w; cv.height=h; } return true; }
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const minus=v=>String(v).replace('-','−');
+function setPressed(host,btn){ host.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===btn)); }
+function ball(c,x,y,r,col,ink){ c.fillStyle=col; c.beginPath(); c.arc(x,y,r,0,6.284); c.fill(); if(r>3){ const g=c.createRadialGradient(x-r*.35,y-r*.4,0,x-r*.35,y-r*.4,r*.8); g.addColorStop(0,'rgba(255,255,255,0.45)'); g.addColorStop(1,'rgba(255,255,255,0)'); c.fillStyle=g; c.beginPath(); c.arc(x,y,r,0,6.284); c.fill(); c.strokeStyle=ink; c.globalAlpha*=0.35; c.lineWidth=Math.max(1,r*0.08); c.stroke(); c.globalAlpha/=0.35; } }
+
+/* ---------- tabs + animation loop ---------- */
+const TABS=['matter','states','change','diffuse','dissolve','separate','quiz'];
+let ACTIVE='matter';
+const LOOPS={};
+function showTab(id){ ACTIVE=id; TABS.forEach(t=>{ const on=t===id, b=$('#tab-'+t); b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; $('#p-'+t).hidden=!on; }); if(LOOPS[id]&&LOOPS[id].show) LOOPS[id].show(); }
+TABS.forEach((t,i)=>{ const b=$('#tab-'+t); b.addEventListener('click',()=>showTab(t));
+  b.addEventListener('keydown',e=>{ if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft') return; const n=TABS[(i+(e.key==='ArrowRight'?1:TABS.length-1))%TABS.length]; showTab(n); $('#tab-'+n).focus(); }); });
+let lastT=performance.now();
+function frame(now){ const dt=Math.min(0.04,(now-lastT)/1000); lastT=now; const L=LOOPS[ACTIVE]; if(L&&L.tick) L.tick(dt,now/1000); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* ================= STATION 1: zoom in ================= */
+const ZOBJ={
+  ice:{name:'Ice cube',state:'s',col:'--p-ice',cap:'In ice (solid water) the particles are packed in a regular pattern. They are held in place and can only vibrate.'},
+  water:{name:'Drop of water',state:'l',col:'--p-water',cap:'In liquid water the particles are still touching, but they are jumbled up and slide past each other.'},
+  air:{name:'Air',state:'g',col:'--p-n2',cap:'Air is a mixture of gases, mostly nitrogen (grey) and oxygen (red). The particles are far apart and move fast in all directions.'},
+  iron:{name:'Iron nail',state:'s',col:'--p-iron',cap:'Iron is a solid, so its particles are packed tightly in a regular pattern and vibrate in fixed places.'}
+};
+const ZM={key:'ice',z:0,pts:[]};
+function zmBuild(){ const o=ZOBJ[ZM.key], P=[];
+  if(o.state==='s'){ for(let j=-14;j<=14;j++) for(let i=-22;i<=22;i++) P.push({x:i,y:j,ph:Math.random()*6.3}); }
+  else if(o.state==='l'){ for(let j=-14;j<=14;j++) for(let i=-22;i<=22;i++){ if(Math.random()<0.1) continue; P.push({x:i+rnd(-0.3,0.3)+(j%2?0.5:0),y:j*0.92+rnd(-0.2,0.2),ph:Math.random()*6.3,vx:rnd(-0.4,0.4),vy:rnd(-0.4,0.4)}); } }
+  else { for(let k=0;k<110;k++){ const a=Math.random()*6.3; P.push({x:rnd(-30,30),y:rnd(-20,20),vx:Math.cos(a)*5,vy:Math.sin(a)*5,o2:Math.random()<0.21}); } }
+  ZM.pts=P; }
+$('#zmPick').innerHTML=Object.keys(ZOBJ).map(k=>`<button class="chip" data-k="${k}" aria-pressed="${k===ZM.key}">${ZOBJ[k].name}</button>`).join('');
+$$('#zmPick button').forEach(b=>b.addEventListener('click',()=>{ ZM.key=b.dataset.k; setPressed($('#zmPick'),b); $('#zmName').textContent=ZOBJ[ZM.key].name; zmBuild(); zmCaption(); }));
+$('#zmZoom').addEventListener('input',e=>{ ZM.z=e.target.value/100; zmCaption(); });
+function zmCaption(){ const z=ZM.z, o=ZOBJ[ZM.key], m=Math.round(Math.pow(10,9*z)); const mag=m>=1000?Number(m.toPrecision(1)).toLocaleString('en-GB').replace(/,/g,' '):String(m);
+  $('#zmMag').textContent=`Magnified ${mag}×`;
+  $('#zmCap').textContent=z<0.3?`${o.name} looks smooth and continuous. You cannot see any particles. Drag the slider to zoom in.`:z<0.55?`Even magnified ${mag} times it still looks smooth. Particles are far too small to see with a microscope. Keep going.`:`This model shows the particles, magnified about ${mag} times. ${o.cap}`; }
+const zmc=$('#zmCanvas'), zmx=zmc.getContext('2d');
+function zmDraw(dt,t){ if(!sizeCv(zmc)) return; const W=zmc.width, H=zmc.height, c=zmx, z=ZM.z, o=ZOBJ[ZM.key], ink=tok('--ink'), col=tok(o.col);
+  c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,W,H);
+  const oa=1-clamp((z-0.45)/0.25,0,1), pa=clamp((z-0.45)/0.2,0,1), cx=W/2, cy=H/2;
+  if(oa>0){ c.globalAlpha=oa; const S=Math.min(W,H)*0.28*(1+5*Math.pow(clamp(z/0.6,0,1),2));
+    if(ZM.key==='ice'){ c.fillStyle=col; c.beginPath(); c.roundRect(cx-S,cy-S,2*S,2*S,S*0.18); c.fill(); c.fillStyle='rgba(255,255,255,0.45)'; c.beginPath(); c.roundRect(cx-S*0.8,cy-S*0.8,S*0.5,S*1.2,S*0.12); c.fill(); }
+    else if(ZM.key==='water'){ c.fillStyle=col; c.beginPath(); c.moveTo(cx,cy-S*1.2); c.bezierCurveTo(cx+S*0.9,cy-S*0.2,cx+S*0.9,cy+S*0.9,cx,cy+S*0.9); c.bezierCurveTo(cx-S*0.9,cy+S*0.9,cx-S*0.9,cy-S*0.2,cx,cy-S*1.2); c.fill(); c.fillStyle='rgba(255,255,255,0.4)'; c.beginPath(); c.ellipse(cx-S*0.35,cy+S*0.1,S*0.12,S*0.3,0.3,0,6.3); c.fill(); }
+    else if(ZM.key==='air'){ c.strokeStyle=tok('--glass'); c.lineWidth=Math.max(3,S*0.04); c.beginPath(); c.roundRect(cx-S*0.8,cy-S,S*1.6,S*2,S*0.15); c.stroke(); c.fillStyle=tok('--muted'); c.font=`700 ${Math.max(14,S*0.16)}px "Atkinson Hyperlegible", sans-serif`; c.textAlign='center'; c.fillText('a jar of air',cx,cy); c.font=`${Math.max(12,S*0.11)}px "Atkinson Hyperlegible", sans-serif`; c.fillText('(it looks empty!)',cx,cy+S*0.2); }
+    else { c.fillStyle=col; c.beginPath(); c.roundRect(cx-S*1.4,cy-S*0.12,S*2.4,S*0.24,S*0.05); c.fill(); c.beginPath(); c.roundRect(cx+S*0.95,cy-S*0.3,S*0.18,S*0.6,S*0.04); c.fill(); c.beginPath(); c.moveTo(cx-S*1.4,cy-S*0.12); c.lineTo(cx-S*1.75,cy); c.lineTo(cx-S*1.4,cy+S*0.12); c.fill(); }
+    c.globalAlpha=1; }
+  if(pa>0){ const k=(W/36)*(1+5*Math.pow(clamp((z-0.45)/0.55,0,1),1.6)), r=(o.state==='g'?0.3:0.47)*k, kp=o.state==='g'?k*0.32:k; c.globalAlpha=pa;
+    const n2=tok('--p-n2'), o2=tok('--p-o2');
+    for(const p of ZM.pts){ let x=p.x, y=p.y;
+      if(o.state==='s'){ x+=0.06*Math.sin(t*14+p.ph); y+=0.06*Math.cos(t*16+p.ph*1.3); }
+      else if(o.state==='l'){ if(!reduceMotion){ p.x+=p.vx*dt; p.y+=p.vy*dt; if(Math.random()<0.02){ p.vx=rnd(-0.4,0.4); p.vy=rnd(-0.4,0.4); } if(p.x>23) p.x-=46; if(p.x<-23) p.x+=46; if(p.y>15) p.y-=30; if(p.y<-15) p.y+=30; } x=p.x+0.12*Math.sin(t*6+p.ph); y=p.y+0.12*Math.cos(t*7+p.ph); }
+      else { if(!reduceMotion){ p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.x>30) p.x-=60; if(p.x<-30) p.x+=60; if(p.y>20) p.y-=40; if(p.y<-20) p.y+=40; } }
+      if(o.state==='g'){ for(let mx=-2;mx<=2;mx++) for(let my=-2;my<=2;my++){ const sx=cx+(x+mx*60)*kp, sy=cy+(y+my*40)*kp; if(sx<-r||sx>W+r||sy<-r||sy>H+r) continue; ball(c,sx,sy,r,p.o2?o2:n2,ink); } continue; }
+      const sx=cx+x*k, sy=cy+y*k; if(sx<-r||sx>W+r||sy<-r||sy>H+r) continue;
+      ball(c,sx,sy,r,col,ink); }
+    c.globalAlpha=1; }
+}
+LOOPS.matter={tick:zmDraw};
+zmBuild(); zmCaption();
+
+/* is it matter? */
+const MT=[['helium',1,'Helium is a gas. It has mass and takes up space, which is why it fills a balloon.'],['smoke',1,'Smoke is tiny bits of solid floating in air: both are matter.'],['a rainbow',0,'A rainbow is light. Light has no mass and does not take up space.'],
+  ['sand',1,'Sand is a solid made of particles: it has mass and takes up space.'],['magnetism',0,'Magnetism is a force, not a substance. It has no mass.'],['orange juice',1,'Orange juice is a liquid (a mixture): it has mass and takes up space.'],
+  ['a cloud',1,'A cloud is made of tiny drops of liquid water, so it is matter.'],['sunlight',0,'Sunlight is energy that travels as light. It has no mass.'],['a radio wave',0,'Radio waves are a kind of light you cannot see. They have no mass.'],['steam',1,'Steam is water as a gas: still made of water particles.']];
+const MS={ans:{}};
+function mtRender(){ const host=$('#mtCards'); host.innerHTML='';
+  MT.forEach(([n,isM,why],i)=>{ const d=document.createElement('div'), done=i in MS.ans; d.className='scard'+(done?(MS.ans[i]===isM?' right':' wrong'):'');
+    d.innerHTML=`<b>${n}</b>${done?`<span class="why"><b>${isM?'Matter.':'Not matter.'}</b> ${why}</span>`:`<div class="row"><button data-v="1">Matter</button><button data-v="0">Not matter</button></div>`}`;
+    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ MS.ans[i]=+b.dataset.v; mtRender(); })); host.appendChild(d); });
+  $('#mtScore').textContent=`${Object.keys(MS.ans).filter(k=>MS.ans[k]===MT[k][1]).length} / ${MT.length}`; }
+mtRender();
+
+/* football pump */
+const PM={a:0,target:0,pumping:0,anim:null,pumped:false};
+function pmDraw(){ const svg=$('#pumpSvg'); svg.innerHTML=''; const a=PM.a, mass=(410+6*a).toFixed(1);
+  el('rect',{x:120,y:200,width:280,height:22,rx:6,fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':2},svg);
+  el('rect',{x:150,y:222,width:220,height:30,rx:6,fill:'var(--ink)'},svg);
+  el('text',{x:260,y:243,'text-anchor':'middle',fill:'var(--bg)','font-family':'JetBrains Mono, monospace','font-size':18,'font-weight':700},svg,mass+' g');
+  const ry=lerp(34,62,a), rx=lerp(80,62,a), cy=200-ry; el('ellipse',{cx:260,cy,rx,ry,fill:'var(--surface)',stroke:'var(--ink)','stroke-width':2.5},svg);
+  el('path',{d:`M${260-rx*0.35} ${cy-ry*0.15} l${rx*0.18} ${-ry*0.28} l${rx*0.3} 0 l${rx*0.12} ${ry*0.28} l${-rx*0.3} ${ry*0.25} z`,fill:'var(--ink)',opacity:.75},svg);
+  const n=Math.round(8+26*a); for(let i=0;i<n;i++){ const t=i*2.399, rr=Math.sqrt((i+0.5)/n)*0.8; el('circle',{cx:260+Math.cos(t)*rr*rx*0.95,cy:cy+Math.sin(t)*rr*ry*0.9,r:2.8,fill:'var(--p-n2)',opacity:.85},svg); }
+  // pump
+  const hy=PM.pumping?150:118; el('rect',{x:440,y:120,width:34,height:80,rx:5,fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':2},svg);
+  el('line',{x1:457,y1:hy,x2:457,y2:120,stroke:'var(--muted)','stroke-width':5},svg); el('rect',{x:432,y:hy-10,width:50,height:10,rx:4,fill:'var(--muted)'},svg);
+  el('path',{d:`M457 200 C 457 230, ${260+rx} 230, ${260+rx*0.7} ${cy+ry*0.55}`,fill:'none',stroke:'var(--muted)','stroke-width':3},svg);
+  el('text',{x:260,y:22,'text-anchor':'middle',class:'s-mut'},svg,a<0.05?'flat football':a>0.95?'pumped-up football':'pumping…');
+}
+function pmAnim(){ if(PM.anim) return; const step=()=>{ const d=PM.target-PM.a; if(Math.abs(d)<0.005){ PM.a=PM.target; PM.anim=null; pmDraw(); pmCap(); return; } PM.a+=Math.sign(d)*Math.min(Math.abs(d),0.02); pmDraw(); PM.anim=requestAnimationFrame(step); }; PM.anim=requestAnimationFrame(step); }
+function pmCap(){ const dm=(6*PM.a).toFixed(1); $('#pmCap').innerHTML=PM.a<0.02?(PM.pumped?'With the air let out, the mass is back to 410.0 g.':'Predict: will the mass go up, go down or stay the same when you pump in air?'):`The mass has gone up by <b>${dm} g</b>. The extra air particles squashed into the ball have mass. Air has mass and takes up space, so <b>air is matter</b>.`; }
+$('#pmPump').addEventListener('click',()=>{ PM.pumped=true; PM.target=Math.min(1,PM.target+0.25); PM.pumping=1; pmDraw(); setTimeout(()=>{ PM.pumping=0; pmDraw(); },180); pmAnim(); });
+$('#pmLet').addEventListener('click',()=>{ PM.target=0; pmAnim(); });
+pmDraw();
+/* ================= STATION 2: solids, liquids, gases ================= */
+const SW=100, SH=150, PR=3.6;
+const BOX={tall:{x0:22,x1:78,y0:34,y1:142},wide:{x0:6,x1:94,y0:84,y1:142}};
+const SS={shape:'tall',squash:false,panels:[],known:{squash:false,pour:false}};
+function stInit(){ const b=BOX[SS.shape]; SS.panels=['s','l','g'].map(k=>({k,lid:b.y0,parts:[],bx:50,by:b.y1}));
+  const [S,L,G]=SS.panels;
+  for(let j=0;j<5;j++) for(let i=0;i<6;i++) S.parts.push({hx:(i-2.5)*7.4,hy:-(j+0.5)*7.3,ph:Math.random()*6.3,x:0,y:0});
+  for(let i=0;i<30;i++) L.parts.push({x:rnd(b.x0+5,b.x1-5),y:rnd(b.y1-60,b.y1-6),vx:0,vy:0});
+  for(let i=0;i<16;i++){ const a=Math.random()*6.3; G.parts.push({x:rnd(b.x0+5,b.x1-5),y:rnd(b.y0+5,b.y1-5),vx:Math.cos(a)*90,vy:Math.sin(a)*90}); } }
+function liquidTop(P){ return Math.min(...P.parts.map(p=>p.y))-PR; }
+function stStep(dt,t){ const b=BOX[SS.shape];
+  SS.panels.forEach(P=>{
+    let target=b.y0;
+    if(SS.squash){ if(P.k==='g') target=b.y0+0.62*(b.y1-b.y0); else if(P.k==='l') target=Math.max(b.y0,liquidTop(P)-1); else target=Math.max(b.y0,P.by-5*7.3-PR-1); }
+    P.lid+=clamp(target-P.lid,-60*dt,60*dt);
+    if(P.k==='s'){ const by=b.y1-1; P.by+=clamp(by-P.by,-120*dt,120*dt); P.bx+=clamp(50-P.bx,-80*dt,80*dt);
+      P.parts.forEach(p=>{ p.x=P.bx+p.hx+(reduceMotion?0:0.35*Math.sin(t*15+p.ph)); p.y=P.by+p.hy+(reduceMotion?0:0.35*Math.cos(t*17+p.ph)); }); }
+    else if(P.k==='l'){ for(let s=0;s<3;s++){ const h=dt/3;
+        P.parts.forEach(p=>{ p.vy+=420*h; if(!reduceMotion){ p.vx+=rnd(-1,1)*900*h; p.vy+=rnd(-1,1)*500*h; } p.vx*=0.985; p.vy*=0.985; p.x+=p.vx*h; p.y+=p.vy*h;
+          if(p.x<b.x0+PR){p.x=b.x0+PR;p.vx=Math.abs(p.vx)*0.4;} if(p.x>b.x1-PR){p.x=b.x1-PR;p.vx=-Math.abs(p.vx)*0.4;} if(p.y>b.y1-PR){p.y=b.y1-PR;p.vy=-Math.abs(p.vy)*0.3;} if(p.y<P.lid+PR){p.y=P.lid+PR;p.vy=Math.abs(p.vy)*0.3;} });
+        const A=P.parts; for(let i=0;i<A.length;i++) for(let j=i+1;j<A.length;j++){ const p=A[i], q=A[j], dx=q.x-p.x, dy=q.y-p.y, d=Math.hypot(dx,dy)||0.01, D=2*PR;
+          if(d<D){ const o=(D-d)/2/d; p.x-=dx*o; p.y-=dy*o; q.x+=dx*o; q.y+=dy*o; const nx=dx/d, ny=dy/d, rv=(q.vx-p.vx)*nx+(q.vy-p.vy)*ny; if(rv<0){ p.vx+=rv*nx*0.5; p.vy+=rv*ny*0.5; q.vx-=rv*nx*0.5; q.vy-=rv*ny*0.5; } }
+          else if(d<D*1.35){ const f=30*h*(d-D)/d; p.vx+=dx*f; p.vy+=dy*f; q.vx-=dx*f; q.vy-=dy*f; } } } }
+    else { const sp=reduceMotion?30:90; P.parts.forEach(p=>{ const v=Math.hypot(p.vx,p.vy)||1; p.vx*=sp/v; p.vy*=sp/v; p.x+=p.vx*dt; p.y+=p.vy*dt;
+        if(p.x<b.x0+PR){p.x=b.x0+PR;p.vx=Math.abs(p.vx);} if(p.x>b.x1-PR){p.x=b.x1-PR;p.vx=-Math.abs(p.vx);} if(p.y>b.y1-PR){p.y=b.y1-PR;p.vy=-Math.abs(p.vy);} if(p.y<P.lid+PR){p.y=P.lid+PR;p.vy=Math.abs(p.vy);} }); }
+  }); }
+const stc=$('#stCanvas'), stx=stc.getContext('2d');
+function stDraw(){ if(!sizeCv(stc)) return; const W=stc.width, H=stc.height, c=stx, pw=W/3, s=Math.min(pw/SW,H/SH), b=BOX[SS.shape], ink=tok('--ink'), glass=tok('--glass'), col=tok('--p-water');
+  c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,W,H);
+  SS.panels.forEach((P,i)=>{ const ox=i*pw+(pw-SW*s)/2, oy=(H-SH*s)/2; c.setTransform(s,0,0,s,ox,oy);
+    c.fillStyle=ink; c.font='700 11px "Bricolage Grotesque", system-ui, sans-serif'; c.textAlign='center'; c.fillText(['Solid','Liquid','Gas'][i],50,14);
+    c.strokeStyle=glass; c.lineWidth=2; c.beginPath(); c.moveTo(b.x0-1,b.y0-8); c.lineTo(b.x0-1,b.y1+1); c.lineTo(b.x1+1,b.y1+1); c.lineTo(b.x1+1,b.y0-8); c.stroke();
+    c.fillStyle=tok('--muted'); c.fillRect(b.x0,P.lid-3,b.x1-b.x0,3); c.fillRect(49,P.lid-14,2,11); c.fillRect(42,P.lid-16,16,3);
+    P.parts.forEach(p=>ball(c,p.x,p.y,PR,col,ink)); });
+  c.setTransform(1,0,0,1,0,0); }
+function stTable(){ const K=SS.known, Y='<td class="y">yes</td>', N='<td class="n">no</td>', Q='<td class="q">?</td>';
+  const rows=[['Keeps its shape',K.pour,[1,0,0]],['Keeps its volume',K.squash,[1,1,0]],['Can flow and be poured',K.pour,[0,1,1]],['Can be squashed',K.squash,[0,0,1]]];
+  $('#stProps').innerHTML='<thead><tr><th></th><th>Solid</th><th>Liquid</th><th>Gas</th></tr></thead><tbody>'+rows.map(([n,k,v])=>`<tr><th>${n}</th>${v.map(x=>k?(x?Y:N):Q).join('')}</tr>`).join('')+'</tbody>'; }
+$('#stSquash').addEventListener('click',()=>{ SS.squash=!SS.squash; $('#stSquash').textContent=SS.squash?'Let go':'Squash them'; if(SS.squash){ SS.known.squash=true; stTable();
+  $('#stCap').textContent='The lid only moves down on the gas. Gas particles are far apart, so they can be pushed closer together. In the solid and the liquid the particles are already touching, so there is no space to squash them into.'; } else $('#stCap').textContent='The gas spreads out again to fill the whole container.'; });
+$('#stPour').addEventListener('click',()=>{ SS.shape=SS.shape==='tall'?'wide':'tall'; $('#stPour').textContent=SS.shape==='tall'?'Pour into a wide container':'Pour back into the tall container'; SS.squash=false; $('#stSquash').textContent='Squash them';
+  const b=BOX[SS.shape]; SS.panels.forEach(P=>{ P.lid=b.y0; }); SS.known.pour=true; stTable();
+  $('#stCap').textContent='The solid keeps its shape: its particles are held in fixed positions. The liquid flows to take the shape of the bottom of the new container, but its volume stays the same. The gas spreads out to fill the whole container.'; });
+$('#stReset').addEventListener('click',()=>{ SS.shape='tall'; SS.squash=false; $('#stSquash').textContent='Squash them'; $('#stPour').textContent='Pour into a wide container'; stInit(); $('#stCap').textContent='Predict first: which state can be squashed? Which ones change shape when you pour them? Then try it.'; });
+stInit(); stTable();
+LOOPS.states={tick(dt,t){ stStep(dt,t); stDraw(); }};
+/* ================= STATION 3: changes of state ================= */
+const SUBST={
+  water:{name:'Water',start:-20,max:130,mp:0,bp:100,Lf:20,Lv:40,col:'--p-water',ylo:-30,yhi:140},
+  co2:{name:'Carbon dioxide (dry ice)',start:-100,max:20,sub:-78,Ls:36,col:'--p-n2',ylo:-110,yhi:30}
+};
+const CH={key:'water',E:0,mode:0,time:0,pts:[],parts:[],lost:0,phase:'',log:[],acc:0};
+const NPART=40, BX0=14, BX1=86, BY1=118, BYTOP=12;
+function seg(S){ if(S.sub!=null){ const e1=S.sub-S.start, e2=e1+S.Ls, e3=e2+(S.max-S.sub); return {e1,e2,e3,emax:e3}; } const e1=S.mp-S.start, e2=e1+S.Lf, e3=e2+(S.bp-S.mp), e4=e3+S.Lv, e5=e4+(S.max-S.bp); return {e1,e2,e3,e4,e5,emax:e5}; }
+function stateOf(){ const S=SUBST[CH.key], g=seg(S), E=CH.E;
+  if(S.sub!=null){ if(E<g.e1) return {T:S.start+E,fs:1,fg:0,ph:'solid'}; if(E<g.e2) return {T:S.sub,fs:1-(E-g.e1)/S.Ls,fg:(E-g.e1)/S.Ls,ph:'sub'}; return {T:S.sub+(E-g.e2),fs:0,fg:1,ph:'gas'}; }
+  if(E<g.e1) return {T:S.start+E,fs:1,fg:0,ph:'solid'}; if(E<g.e2){ const f=(E-g.e1)/S.Lf; return {T:S.mp,fs:1-f,fg:0,ph:'melt'}; }
+  if(E<g.e3) return {T:S.mp+(E-g.e2),fs:0,fg:0,ph:'liquid'}; if(E<g.e4){ const f=(E-g.e3)/S.Lv; return {T:S.bp,fs:0,fg:f,ph:'boil'}; } return {T:S.bp+(E-g.e4),fs:0,fg:1,ph:'gas'}; }
+function homes(){ const H=[]; for(let j=0;j<5;j++) for(let i=0;i<8;i++) H.push({x:50+(i-3.5)*7.6,y:BY1-3.8-j*7.4}); return H; }
+const HOMES=homes();
+function chReset(){ const S=SUBST[CH.key]; CH.E=0; CH.time=0; CH.pts=[{t:0,T:S.start}]; CH.lost=0; CH.log=[]; CH.phase='solid'; CH.parts=HOMES.map((h,i)=>({role:'s',home:i,x:h.x,y:h.y,vx:0,vy:0,ph:Math.random()*6.3,gone:false}));
+  setMode(0); chUI(); chLog(); }
+function setMode(m){ CH.mode=m; setPressed($('#chMode'),$(`#chMode button[data-m="${m}"]`)); }
+$('#chMode').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setMode(+b.dataset.m)));
+$('#chPick').innerHTML=Object.keys(SUBST).map(k=>`<button class="chip" data-k="${k}" aria-pressed="${k===CH.key}">${SUBST[k].name}</button>`).join('');
+$$('#chPick button').forEach(b=>b.addEventListener('click',()=>{ CH.key=b.dataset.k; setPressed($('#chPick'),b); chReset(); }));
+$('#chReset').addEventListener('click',chReset);
+$('#chSeal').addEventListener('change',chUI);
+function addLog(txt){ if(!CH.log.includes(txt)){ CH.log.push(txt); chLog(); } }
+function chLog(){ $('#chLog').innerHTML=CH.log.length?CH.log.map(x=>`<span class="pill on">${x}</span>`).join(''):'<span class="small">None yet. Press Heat.</span>'; }
+const CAPS={water:{solid:'Ice: the particles vibrate faster as the temperature rises, but they stay in their fixed places.',melt:'Melting at 0 °C. The energy is used to free particles from their fixed places, so the temperature stays the same until all the ice has melted.',
+  liquid:'Liquid water: the particles move faster as it gets hotter. A few particles at the surface escape as a gas: this is evaporation, and it happens below the boiling point.',boil:'Boiling at 100 °C. Particles all through the liquid escape as a gas, making bubbles. The temperature stays at 100 °C until all the water has boiled.',
+  gas:'Steam (water as a gas): the particles are far apart and move very fast in all directions.',
+  cmelt:'Freezing at 0 °C. As the water cools, particles settle back into fixed places. The temperature stays at 0 °C until it has all frozen.',cboil:'Condensing at 100 °C. Gas particles slow down and come back together to form a liquid.'},
+  co2:{solid:'Dry ice is solid carbon dioxide. Its particles vibrate in fixed places.',sub:'Sublimation at −78 °C. The solid turns straight into a gas without becoming a liquid first. The temperature stays the same while it happens.',gas:'Carbon dioxide gas: the particles are far apart and move fast.',csub:'Deposition at −78 °C: the gas turns straight back into a solid.'}};
+function chUI(){ const st=stateOf(), S=SUBST[CH.key];
+  $('#chT').textContent=`${minus(Math.round(st.T))} °C`;
+  $('#chState').textContent={solid:'Solid',melt:'Melting / freezing',liquid:'Liquid',boil:'Boiling / condensing',gas:'Gas',sub:'Sublimation'}[st.ph];
+  const cool=CH.mode<0, k=cool&&(st.ph==='melt'||st.ph==='boil'||st.ph==='sub')?'c'+st.ph:st.ph; $('#chCap').textContent=CAPS[CH.key][k]||CAPS[CH.key][st.ph];
+  const sealed=$('#chSeal').checked, mass=50*(NPART-CH.lost)/NPART; $('#chMass').textContent=mass.toFixed(1)+' g';
+  $('#chMassNote').textContent=sealed?(CH.lost?'Sealed now, but some gas escaped earlier.':'Sealed: no particles can get in or out, so the mass stays the same.'):'Open: gas particles can escape into the room, so the mass on the balance goes down.'; }
+const chc=$('#chCanvas'), chx=chc.getContext('2d');
+function chStep(dt,t){ const S=SUBST[CH.key], g=seg(S), before=stateOf();
+  if(CH.mode!==0){ CH.E=clamp(CH.E+CH.mode*8*dt,0,g.emax); CH.time+=dt; CH.acc+=dt; if(CH.acc>0.15){ CH.acc=0; CH.pts.push({t:CH.time,T:stateOf().T}); } }
+  const st=stateOf();
+  if(st.ph!==before.ph||CH.mode!==0){ if(CH.mode>0){ if(st.ph==='melt') addLog('Melting at 0 °C'); if(st.ph==='boil') addLog('Boiling at 100 °C'); if(st.ph==='sub') addLog('Sublimation at −78 °C'); if(st.ph==='liquid'&&st.T>30) addLog('Evaporating below 100 °C'); }
+    if(CH.mode<0){ if(st.ph==='boil') addLog('Condensing at 100 °C'); if(st.ph==='melt') addLog('Freezing at 0 °C'); if(st.ph==='sub') addLog('Deposition at −78 °C'); } }
+  // desired counts among particles still present
+  const P=CH.parts.filter(p=>!p.gone), n=P.length, wantS=Math.round(st.fs*n), evap=S.sub!=null?0:st.ph==='liquid'?Math.round(n*0.1*clamp((st.T-20)/80,0,1)):st.ph==='boil'?Math.round(n*0.1):0, wantG=Math.min(n,Math.round(st.fg*n)+evap);
+  const cnt=r=>P.filter(p=>p.role===r).length;
+  const freeHome=()=>{ const used=new Set(P.filter(p=>p.role==='s').map(p=>p.home)); for(let i=0;i<HOMES.length;i++) if(!used.has(i)) return i; return 0; };
+  let guard=0;
+  while(cnt('s')>wantS&&guard++<50){ const sol=P.filter(p=>p.role==='s').sort((a,b)=>HOMES[a.home].y-HOMES[b.home].y)[0]; sol.role=S.sub!=null?'g':'l'; if(sol.role==='g'){ sol.vy=-60; sol.vx=rnd(-40,40); } }
+  while(cnt('s')<wantS&&guard++<100){ const src=S.sub!=null?P.filter(p=>p.role==='g'):P.filter(p=>p.role==='l'); if(!src.length) break; const p=src.sort((a,b)=>b.y-a.y)[0]; p.role='s'; p.home=freeHome(); }
+  while(cnt('g')<wantG&&guard++<150){ const src=P.filter(p=>p.role==='l'); if(!src.length) break; const p=src.sort((a,b)=>a.y-b.y)[0]; p.role='g'; p.vy=-70; p.vx=rnd(-40,40); }
+  while(cnt('g')>Math.max(0,wantG)&&guard++<200){ const src=P.filter(p=>p.role==='g'); if(!src.length) break; const p=src.sort((a,b)=>b.y-a.y)[0]; if(S.sub!=null){ p.role='s'; p.home=freeHome(); } else { p.role='l'; } }
+  // motion
+  const sealed=$('#chSeal').checked, top=sealed?BYTOP:-30, speed=reduceMotion?0.4:1, gv=55*Math.sqrt((st.T+273)/373)*speed, amp=0.25+0.9*clamp((st.T-S.start)/((S.mp??S.sub)-S.start+1),0,1);
+  P.forEach(p=>{ if(p.role==='s'){ const h=HOMES[p.home]; p.x=lerp(p.x,h.x+amp*Math.sin(t*16+p.ph)*speed,Math.min(1,dt*8)); p.y=lerp(p.y,h.y+amp*Math.cos(t*18+p.ph)*speed,Math.min(1,dt*8)); p.vx=p.vy=0; }
+    else if(p.role==='g'){ const v=Math.hypot(p.vx,p.vy)||1; p.vx=p.vx/v*gv; p.vy=p.vy/v*gv; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.x<BX0+PR){p.x=BX0+PR;p.vx=Math.abs(p.vx);} if(p.x>BX1-PR){p.x=BX1-PR;p.vx=-Math.abs(p.vx);} if(p.y>BY1-PR){p.y=BY1-PR;p.vy=-Math.abs(p.vy);}
+      if(p.y<top+PR){ if(sealed){p.y=top+PR;p.vy=Math.abs(p.vy);} else { p.gone=true; CH.lost++; } } } });
+  const L=P.filter(p=>p.role==='l'), solids=P.filter(p=>p.role==='s');
+  for(let s=0;s<2;s++){ const h=dt/2; L.forEach(p=>{ p.vy+=380*h; if(!reduceMotion){ p.vx+=rnd(-1,1)*(500+5*Math.max(0,st.T))*h; p.vy+=rnd(-1,1)*300*h; } p.vx*=0.985; p.vy*=0.985; p.x+=p.vx*h; p.y+=p.vy*h;
+      if(p.x<BX0+PR){p.x=BX0+PR;p.vx=Math.abs(p.vx)*0.4;} if(p.x>BX1-PR){p.x=BX1-PR;p.vx=-Math.abs(p.vx)*0.4;} if(p.y>BY1-PR){p.y=BY1-PR;p.vy=-Math.abs(p.vy)*0.3;} if(p.y<BYTOP+PR){p.y=BYTOP+PR;p.vy=Math.abs(p.vy);} });
+    const A=L.concat(solids); for(let i=0;i<L.length;i++) for(let j=0;j<A.length;j++){ const p=L[i], q=A[j]; if(p===q) continue; const dx=q.x-p.x, dy=q.y-p.y, d=Math.hypot(dx,dy)||0.01, D=2*PR; if(d<D){ const o=(D-d)/d; if(q.role==='s'){ p.x-=dx*o; p.y-=dy*o; p.vx*=0.6; p.vy*=0.6; } else if(j>i||q.role!=='l'){ p.x-=dx*o/2; p.y-=dy*o/2; q.x+=dx*o/2; q.y+=dy*o/2; } } else if(q.role==='l'&&d<D*1.35){ const f=25*h*(d-D)/d; p.vx+=dx*f; p.vy+=dy*f; } } }
+  if(st.ph!==CH.phase||CH.mode!==0){ CH.phase=st.ph; } chUI();
+}
+function chDraw(){ if(!sizeCv(chc)) return; const W=chc.width, H=chc.height, c=chx, S=SUBST[CH.key], ink=tok('--ink'), muted=tok('--muted'), col=tok(S.col);
+  c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,W,H);
+  // beaker on the left 40%
+  const bw=W*0.4, s=Math.min(bw/100,H/132), ox=(bw-100*s)/2, oy=(H-132*s)/2+4*s; c.setTransform(s,0,0,s,ox,oy);
+  c.strokeStyle=tok('--glass'); c.lineWidth=2; c.beginPath(); c.moveTo(BX0-1,BYTOP-6); c.lineTo(BX0-1,BY1+1); c.lineTo(BX1+1,BY1+1); c.lineTo(BX1+1,BYTOP-6); c.stroke();
+  if($('#chSeal').checked){ c.fillStyle=muted; c.fillRect(BX0-3,BYTOP-3,BX1-BX0+6,3); }
+  c.fillStyle=muted; c.fillRect(30,BY1+4,40,6);
+  const st=stateOf(); if(CH.mode>0){ c.fillStyle=tok('--bad'); c.globalAlpha=0.7; for(let k=0;k<3;k++){ c.beginPath(); c.moveTo(38+k*8,BY1+18); c.quadraticCurveTo(40+k*8,BY1+11,42+k*8,BY1+18); c.fill(); } c.globalAlpha=1; }
+  if(CH.mode<0){ c.fillStyle=tok('--p-blue'); c.globalAlpha=0.5; c.font='700 9px "JetBrains Mono", monospace'; c.textAlign='center'; c.fillText('cooling',50,BY1+18); c.globalAlpha=1; }
+  CH.parts.filter(p=>!p.gone).forEach(p=>ball(c,p.x,p.y,PR,col,ink));
+  // graph on the right
+  c.setTransform(1,0,0,1,0,0); const gx0=W*0.47, gx1=W*0.97, gy0=H*0.08, gy1=H*0.86, tmax=Math.max(40,Math.ceil((CH.time+2)/10)*10), u=Math.min(W,H)/320;
+  const X=tt=>gx0+tt/tmax*(gx1-gx0), Y=T=>gy1-(T-S.ylo)/(S.yhi-S.ylo)*(gy1-gy0);
+  c.font=`${Math.round(Math.max(11*u,9.5*Math.min(2,devicePixelRatio||1)))}px "JetBrains Mono", monospace`; c.fillStyle=muted; c.textAlign='right'; c.strokeStyle=tok('--line'); c.lineWidth=1;
+  const step=S.yhi-S.ylo>150?20:20; for(let v=Math.ceil(S.ylo/step)*step; v<=S.yhi; v+=step){ c.beginPath(); c.moveTo(gx0,Y(v)); c.lineTo(gx1,Y(v)); c.stroke(); c.fillText(minus(v),gx0-6*u,Y(v)+4*u); }
+  c.textAlign='center'; for(let tt=0; tt<=tmax; tt+=10){ c.fillText(tt,X(tt),gy1+16*u); }
+  c.fillText('Time (s)',(gx0+gx1)/2,gy1+32*u); c.save(); c.translate(gx0-38*u,(gy0+gy1)/2); c.rotate(-Math.PI/2); c.fillText('Temperature (°C)',0,0); c.restore();
+  const refs=S.sub!=null?[[S.sub,'sublimes −78 °C']]:[[S.mp,'melting point 0 °C'],[S.bp,'boiling point 100 °C']];
+  c.setLineDash([6*u,5*u]); c.strokeStyle=tok('--share'); refs.forEach(([v,lab])=>{ c.beginPath(); c.moveTo(gx0,Y(v)); c.lineTo(gx1,Y(v)); c.stroke(); c.fillStyle=tok('--share'); c.textAlign='right'; c.fillText(lab,gx1-4*u,Y(v)-6*u); }); c.setLineDash([]);
+  c.strokeStyle=tok('--da'); c.lineWidth=3*u; c.beginPath(); CH.pts.forEach((p,i)=>i?c.lineTo(X(p.t),Y(p.T)):c.moveTo(X(p.t),Y(p.T))); c.stroke();
+  const last=CH.pts[CH.pts.length-1]; c.fillStyle=tok('--da'); c.beginPath(); c.arc(X(last.t),Y(last.T),5*u,0,6.3); c.fill(); }
+LOOPS.change={tick(dt,t){ chStep(dt,t); chDraw(); }};
+chReset();
+/* ================= STATION 4: diffusion ================= */
+const DW=200, DH=100;
+const DLIQ={sp:55,kick:0.4,ex:1,n:64,r:3.6}, DFT=30;
+const DF={mode:'gas',temp:1,open:false,time:0,parts:[],hit40:false,results:[]};
+function dfInit(){ DF.parts=[]; DF.open=false; DF.time=0; DF.hit40=false; const gas=DF.mode==='gas', r=gas?2.6:DLIQ.r, n=gas?50:DLIQ.n;
+  const place=(x0,x1,purple)=>{ for(let i=0;i<n;i++){ let x,y,ok=false,g=0; while(!ok&&g++<200){ x=rnd(x0+r,x1-r); y=rnd(6+r,DH-6-r); ok=DF.parts.every(p=>Math.hypot(p.x-x,p.y-y)>2*r*(gas?1.4:1.02)); } const a=Math.random()*6.3; DF.parts.push({x,y,vx:Math.cos(a),vy:Math.sin(a),purple,r}); } };
+  place(6,DW/2,true); place(DW/2,DW-6,false); $('#dfGo').disabled=false; dfRead(); }
+function dfRead(){ const P=DF.parts.filter(p=>p.purple), right=P.filter(p=>p.x>DW/2).length, pct=Math.round(right/P.length*100); $('#dfPct').textContent=pct+'%'; $('#dfTime').textContent=DF.time.toFixed(1)+' s';
+  if(DF.open&&!DF.hit40&&pct>=DFT){ DF.hit40=true; DF.results.push([DF.mode==='gas'?'gas':'liquid',{'0.55':'cold','1':'room','1.6':'hot'}[String(DF.temp)],DF.time.toFixed(1)]); dfTable();
+    $('#dfCap').textContent=`${DFT}% reached in ${DF.time.toFixed(1)} s. Try the other state or a different temperature and compare.`; } }
+function dfTable(){ $('#dfRes').innerHTML=DF.results.length?DF.results.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="mono">${r[2]}</td></tr>`).join(''):'<tr><td colspan="3" class="small">Run it to add a result.</td></tr>'; }
+function dfStep(dt){ const gas=DF.mode==='gas', P=DF.parts, wall=DF.open?null:DW/2, sp=(gas?70:DLIQ.sp)*DF.temp*(reduceMotion?0.4:1);
+  for(let s=0;s<2;s++){ const h=dt/2;
+    P.forEach(p=>{ if(!gas){ p.vx+=rnd(-1,1)*DLIQ.kick; p.vy+=rnd(-1,1)*DLIQ.kick; } const v=Math.hypot(p.vx,p.vy)||1; p.vx*=1/v; p.vy*=1/v; p.x+=p.vx*sp*h; p.y+=p.vy*sp*h;
+      const lo=wall&&p.x<wall?6:wall&&p.x>=wall?wall:6, hi=wall&&p.x<wall?wall:DW-6;
+      if(p.x<lo+p.r){p.x=lo+p.r;p.vx=Math.abs(p.vx);} if(p.x>hi-p.r){p.x=hi-p.r;p.vx=-Math.abs(p.vx);} if(p.y<6+p.r){p.y=6+p.r;p.vy=Math.abs(p.vy);} if(p.y>DH-6-p.r){p.y=DH-6-p.r;p.vy=-Math.abs(p.vy);} });
+    for(let i=0;i<P.length;i++) for(let j=i+1;j<P.length;j++){ const p=P[i], q=P[j], dx=q.x-p.x, dy=q.y-p.y; if(Math.abs(dx)>2*p.r||Math.abs(dy)>2*p.r) continue; const d=Math.hypot(dx,dy)||0.01, D=p.r+q.r;
+      if(d<D){ const nx=dx/d, ny=dy/d, o=(D-d)/2; p.x-=nx*o; p.y-=ny*o; q.x+=nx*o; q.y+=ny*o; if(gas||DLIQ.ex){ const a=p.vx*nx+p.vy*ny, b=q.vx*nx+q.vy*ny; p.vx+=(b-a)*nx; p.vy+=(b-a)*ny; q.vx+=(a-b)*nx; q.vy+=(a-b)*ny; } } } }
+  if(DF.open) DF.time+=dt; }
+const dfc=$('#dfCanvas'), dfx=dfc.getContext('2d');
+function dfDraw(){ if(!sizeCv(dfc)) return; const W=dfc.width, H=dfc.height, s=Math.min(W/DW,H/DH), c=dfx, ink=tok('--ink'), purple=tok('--p-ink'), other=tok(DF.mode==='gas'?'--p-n2':'--p-water');
+  c.setTransform(s,0,0,s,(W-DW*s)/2,(H-DH*s)/2); c.clearRect(-50,-50,DW+100,DH+100);
+  c.strokeStyle=tok('--glass'); c.lineWidth=1.5; c.strokeRect(5,5,DW-10,DH-10);
+  if(!DF.open){ c.fillStyle=tok('--muted'); c.fillRect(DW/2-1,5,2,DH-10); }
+  else { c.setLineDash([2,3]); c.strokeStyle=tok('--line'); c.beginPath(); c.moveTo(DW/2,5); c.lineTo(DW/2,DH-5); c.stroke(); c.setLineDash([]); }
+  DF.parts.forEach(p=>{ c.globalAlpha=p.purple?1:(DF.mode==='gas'?0.55:0.35); ball(c,p.x,p.y,p.r,p.purple?purple:other,ink); }); c.globalAlpha=1; c.setTransform(1,0,0,1,0,0); }
+$('#dfMode').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ setPressed($('#dfMode'),b); DF.mode=b.dataset.m; dfInit(); $('#dfCap').textContent=DF.mode==='gas'?'Perfume particles (purple) and air particles (grey). Lift the barrier and time how long it takes for 30% of the purple particles to reach the right.':'Ink particles (purple) and water particles (blue). Liquid particles are touching, so they bump into each other constantly. Predict: faster or slower than in a gas? (Be patient: in the cold this can take about a minute.)'; }));
+$('#dfTemp').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ setPressed($('#dfTemp'),b); DF.temp=+b.dataset.t; }));
+$('#dfGo').addEventListener('click',()=>{ DF.open=true; $('#dfGo').disabled=true; $('#dfCap').textContent='The particles move randomly. More purple particles move from left to right than back, until they are evenly spread: diffusion.'; });
+$('#dfReset').addEventListener('click',()=>{ dfInit(); $('#dfCap').textContent='Purple particles on the right-hand side. When they are fully mixed it will be about 50%.'; });
+dfInit();
+
+/* ammonia + hydrogen chloride tube */
+const TW=300, TH=80, TY0=30, TY1=54, TX0=12, TX1=288;
+const NH={parts:[],ring:[],run:false,t:0,pred:null,done:false};
+function nhReset(){ NH.parts=[]; NH.ring=[]; NH.run=false; NH.t=0; NH.done=false; $('#nhGo').disabled=false; $('#nhCap').textContent=NH.pred?'Press Start.':'Make your prediction, then press Start.'; }
+function nhStep(dt){ if(!NH.run) return; NH.t+=dt;
+  if(NH.t<14&&NH.parts.length<500) for(let k=0;k<3;k++){ NH.parts.push({x:TX0+3,y:rnd(TY0+2,TY1-2),a:Math.random()*6.3,s:200,nh3:true}); NH.parts.push({x:TX1-3,y:rnd(TY0+2,TY1-2),a:Math.random()*6.3,s:137,nh3:false}); }
+  const sub=3, h=dt/sub;
+  for(let k=0;k<sub;k++){ NH.parts.forEach(p=>{ if(Math.random()<h/0.05) p.a=Math.random()*6.3; p.x+=Math.cos(p.a)*p.s*h*(reduceMotion?0.5:1); p.y+=Math.sin(p.a)*p.s*h*(reduceMotion?0.5:1);
+      if(p.x<TX0){p.x=TX0;p.a=Math.PI-p.a;} if(p.x>TX1){p.x=TX1;p.a=Math.PI-p.a;} if(p.y<TY0+1.5){p.y=TY0+1.5;p.a=-p.a;} if(p.y>TY1-1.5){p.y=TY1-1.5;p.a=-p.a;} });
+    const bins={}; NH.parts.forEach((p,i)=>{ if(!p.nh3){ const b=Math.floor(p.x/8); (bins[b]=bins[b]||[]).push(i); } });
+    const dead=new Set(); NH.parts.forEach((p,i)=>{ if(!p.nh3||dead.has(i)) return; const b=Math.floor(p.x/8); for(let d=-1;d<=1;d++) for(const j of (bins[b+d]||[])){ if(dead.has(j)) continue; const q=NH.parts[j]; if(Math.hypot(q.x-p.x,q.y-p.y)<4){ dead.add(i); dead.add(j); NH.ring.push({x:(p.x+q.x)/2,y:(p.y+q.y)/2}); return; } } });
+    if(dead.size) NH.parts=NH.parts.filter((_,i)=>!dead.has(i)); }
+  if(!NH.done&&NH.ring.length>=60){ NH.done=true; const mx=NH.ring.reduce((s,r)=>s+r.x,0)/NH.ring.length, f=(mx-TX0)/(TX1-TX0);
+    const ok=NH.pred==='hcl'; $('#nhCap').innerHTML=`The white ring formed about <b>${Math.round(f*100)}%</b> of the way along from the ammonia end, nearer the hydrogen chloride end. ${NH.pred?(ok?'Your prediction was right. ':'Compare this with your prediction. '):''}Ammonia particles are lighter, so they move faster and travel further in the same time.`; }
+  if(NH.t>26) NH.run=false; }
+const nhc=$('#nhCanvas'), nhx=nhc.getContext('2d');
+function nhDraw(){ if(!sizeCv(nhc)) return; const W=nhc.width, H=nhc.height, s=Math.min(W/TW,H/TH), c=nhx;
+  c.setTransform(s,0,0,s,(W-TW*s)/2,(H-TH*s)/2); c.clearRect(-20,-20,TW+40,TH+40);
+  c.fillStyle=tok('--surface'); c.fillRect(TX0,TY0,TX1-TX0,TY1-TY0); c.strokeStyle=tok('--glass'); c.lineWidth=1.5; c.strokeRect(TX0,TY0,TX1-TX0,TY1-TY0);
+  c.fillStyle=tok('--surface-2'); c.strokeStyle=tok('--muted'); [[4,TX0+2],[TX1-2,TW-4]].forEach(([a,b])=>{ c.beginPath(); c.roundRect(a,TY0-4,b-a,TY1-TY0+8,3); c.fill(); c.stroke(); });
+  const dpr=Math.min(2,devicePixelRatio||1), f1=Math.max(7,11*dpr/s), f2=Math.max(6,10*dpr/s); c.fillStyle=tok('--ink'); c.font=`700 ${f1}px "Atkinson Hyperlegible", sans-serif`; c.textAlign='left'; c.fillText('ammonia',TX0,TY0-8); c.textAlign='right'; c.fillText('hydrogen chloride',TX1,TY0-8);
+  c.textAlign='center'; c.fillStyle=tok('--muted'); c.font=`${f2}px "JetBrains Mono", monospace`; c.fillText('middle',(TX0+TX1)/2,TY1+5+f2); c.fillRect((TX0+TX1)/2-0.3,TY1,0.6,4);
+  const nh3=tok('--p-nh3'), hcl=tok('--p-hcl'); NH.parts.forEach(p=>{ c.fillStyle=p.nh3?nh3:hcl; c.beginPath(); c.arc(p.x,p.y,1.4,0,6.3); c.fill(); });
+  NH.ring.forEach(r=>{ c.fillStyle='#ffffff'; c.strokeStyle=tok('--muted'); c.lineWidth=0.3; c.beginPath(); c.arc(r.x,r.y,1.8,0,6.3); c.fill(); c.stroke(); });
+  c.setTransform(1,0,0,1,0,0); }
+$('#nhPred').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ NH.pred=b.dataset.p; $('#nhPred').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); if(!NH.run) $('#nhCap').textContent='Prediction saved. Press Start.'; }));
+$('#nhGo').addEventListener('click',()=>{ if(NH.done) nhReset(); NH.run=true; $('#nhGo').disabled=true; $('#nhCap').textContent='Watch where the two gases meet.'; });
+$('#nhReset').addEventListener('click',nhReset);
+nhReset();
+LOOPS.diffuse={tick(dt){ dfStep(dt); dfRead(); dfDraw(); nhStep(dt); nhDraw(); }};
+/* ================= STATION 5: mixtures and dissolving ================= */
+/* model: 1 solute particle = 2 g; 100 g of water shown as 110 particles */
+const DSW=320, DSH=200, BK={x0:62,x1:182,y0:50,y1:164}, BCX=122, WR=4.2;
+const SOL={
+  salt:{name:'salt',cap:36,r:3.5,col:'--p-salt',max:60,capTxt:'36 g'},
+  sugar:{name:'sugar',cap:200,r:3.7,col:'--p-sugar',max:260,capTxt:'about 200 g'},
+  sand:{name:'sand',cap:0,r:4.3,col:'--p-sand',max:50,capTxt:'0 g: insoluble'}};
+const DS={key:'salt',liq:[],heap:[],acc:0,stir:0,rodX:BCX,status:'',top:BK.y1-40,found:{},read:''};
+const dsDis=()=>DS.liq.filter(p=>p.k!=='w').length;
+function dsInit(){ DS.liq=[]; DS.heap=[]; DS.acc=0; DS.stir=0; DS.status='';
+  for(let i=0;i<110;i++) DS.liq.push({x:rnd(BK.x0+5,BK.x1-5),y:rnd(BK.y1-60,BK.y1-5),vx:0,vy:0,r:WR,k:'w'});
+  for(let i=0;i<120;i++) dsPhys(1/60,0);
+  $$('#dsAdd,#dsAdd50').forEach(b=>b.disabled=false); dsStatus(true); }
+const HORD={};
+function heapOrder(w){ if(!HORD[w]){ const m=(w-1)/2; HORD[w]=[...Array(w).keys()].sort((a,b)=>Math.abs(a-m)-Math.abs(b-m)||a-b); } return HORD[w]; }
+function heapPos(i,n,r){ const b=clamp(Math.ceil(Math.sqrt(n*1.7)),2,16); let row=0, k=i;
+  for(;;){ const w=row%2?b-1:b; if(k<w){ const slot=heapOrder(w)[k]; return {x:BCX+(slot-(w-1)/2)*2*r, y:BK.y1-r-row*1.732*r}; } k-=w; row++; } }
+function dsPhys(dt,t){ const L=DS.liq, H=DS.heap, sub=3, h=dt/sub, stir=DS.stir>0, kick=(reduceMotion?0.35:1)*(stir?1.4:1);
+  for(let s=0;s<sub;s++){
+    L.forEach(p=>{ p.vy+=420*h; p.vx+=rnd(-1,1)*900*h*kick; p.vy+=rnd(-1,1)*500*h*kick; p.vx*=0.985; p.vy*=0.985; p.x+=p.vx*h; p.y+=p.vy*h;
+      if(p.x<BK.x0+p.r){p.x=BK.x0+p.r;p.vx=Math.abs(p.vx)*0.4;} if(p.x>BK.x1-p.r){p.x=BK.x1-p.r;p.vx=-Math.abs(p.vx)*0.4;}
+      if(p.y>BK.y1-p.r){p.y=BK.y1-p.r;p.vy=-Math.abs(p.vy)*0.3;} if(p.y<BK.y0+p.r){p.y=BK.y0+p.r;p.vy=Math.abs(p.vy)*0.3;}
+      if(stir&&p.y>DS.top-4&&Math.abs(p.x-DS.rodX)<p.r+2.5){ const sgn=p.x<DS.rodX?-1:1; p.x=DS.rodX+sgn*(p.r+2.5); p.vx+=sgn*15; } });
+    for(let i=0;i<L.length;i++){ const p=L[i]; for(let j=i+1;j<L.length;j++){ const q=L[j], dx=q.x-p.x, dy=q.y-p.y, D=p.r+q.r; if(dx>D*1.35||dx<-D*1.35||dy>D*1.35||dy<-D*1.35) continue; const d=Math.hypot(dx,dy)||0.01;
+      if(d<D){ const o=(D-d)/2/d; p.x-=dx*o; p.y-=dy*o; q.x+=dx*o; q.y+=dy*o; const nx=dx/d, ny=dy/d, rv=(q.vx-p.vx)*nx+(q.vy-p.vy)*ny; if(rv<0){ p.vx+=rv*nx*0.5; p.vy+=rv*ny*0.5; q.vx-=rv*nx*0.5; q.vy-=rv*ny*0.5; } }
+      else { const f=30*h*(d-D)/d; p.vx+=dx*f; p.vy+=dy*f; q.vx-=dx*f; q.vy-=dy*f; } } }
+    H.forEach(o=>L.forEach(p=>{ const dx=p.x-o.x, dy=p.y-o.y, D=p.r+o.r; if(dx>D||dx<-D||dy>D||dy<-D) return; const d=Math.hypot(dx,dy)||0.01; if(d<D){ const nx=dx/d, ny=dy/d; p.x=o.x+nx*D; p.y=o.y+ny*D; const vn=p.vx*nx+p.vy*ny; if(vn<0){ p.vx-=1.3*vn*nx; p.vy-=1.3*vn*ny; } } }));
+  }
+  const ys=L.map(p=>p.y).sort((a,b)=>a-b); DS.top=(ys[4]||BK.y1)-WR; }
+function dsUpdate(dt,t){ const S=SOL[DS.key], H=DS.heap, n=H.length;
+  H.forEach((o,i)=>{ const g=heapPos(i,n,o.r); if(o.fall){ o.vy=Math.min(o.vy+260*dt,o.y>DS.top?70:200); o.y+=o.vy*dt; o.x+=(g.x-o.x)*Math.min(1,3*dt); if(o.y>=g.y){ o.y=g.y; o.fall=false; } }
+    else { o.x+=(g.x-o.x)*Math.min(1,8*dt); o.y+=(g.y-o.y)*Math.min(1,8*dt); } });
+  if(DS.stir>0){ DS.stir-=dt; DS.rodX=BCX+48*Math.sin(t*7); }
+  const dis=dsDis();
+  if(n&&S.cap>0&&dis*2<S.cap){ const landed=H.filter(o=>!o.fall).length; DS.acc+=(0.25+0.08*landed)*(DS.stir>0?5:1)*dt;
+    while(DS.acc>=1&&H.length&&!H[H.length-1].fall&&dsDis()*2<S.cap){ DS.acc-=1; const o=H.pop(); const a=-Math.PI/2+rnd(-1,1); DS.liq.push({x:o.x,y:o.y,vx:Math.cos(a)*40,vy:Math.sin(a)*40,r:o.r,k:DS.key}); } }
+  else DS.acc=0;
+  dsPhys(dt,t); dsStatus(false); }
+function dsStatus(force){ const S=SOL[DS.key], dis=dsDis()*2, und=DS.heap.length*2, add=dis+und, total=100+add;
+  let st=add===0?'empty':S.cap===0?'insol':und===0?'solution':dis>=S.cap?'saturated':'dissolving';
+  const read=`${add}|${dis}|${und}`;
+  if(read!==DS.read||force){ DS.read=read; $('#dsTotal').textContent=total+' g';
+    $('#dsRead').innerHTML=[['ADDED',add],['DISSOLVED',dis],['AT THE BOTTOM',und]].map(([l,v])=>`<div class="result"><span class="rl">${l}</span><span class="rv">${v} g</span></div>`).join(''); }
+  if(st==='saturated'||st==='insol') DS.found[DS.key]=true;
+  if(st===DS.status&&!force) return; DS.status=st;
+  $('#dsState').textContent={empty:'Pure water',dissolving:'Dissolving…',solution:'Solution',saturated:'Saturated solution',insol:'Mixture: sand and water'}[st];
+  const nm=S.name;
+  $('#dsCap').innerHTML={
+    empty:`The beaker holds 100 g of pure water at 20 °C. Predict: when you add ${nm}, what will happen to the reading on the balance?`,
+    dissolving:`The ${nm} particles break away from the solid and spread out between the water particles. Press <b>Stir</b> to make it dissolve faster.`,
+    solution:`All ${add} g of ${nm} has dissolved. You cannot see it any more, but the particles are still there, so the balance reads <b>${total} g</b>. The ${nm} is the <b>solute</b>, water is the <b>solvent</b> and together they make a <b>solution</b>.`,
+    saturated:`No more ${nm} will dissolve: the solution is <b>saturated</b>. Only ${S.capTxt} of ${nm} dissolves in 100 g of water at 20 °C. The rest stays at the bottom, but it still counts: the balance reads <b>${total} g</b>.`,
+    insol:`Sand is <b>insoluble</b>. Its particles do not break away, even if you stir. The balance still reads <b>${total} g</b>. Sand and water make a mixture that you can separate by filtering (Station 6).`}[st]; }
+function dsAdd(g){ const S=SOL[DS.key], add=(dsDis()+DS.heap.length)*2; if(add+g>S.max){ $('#dsCap').textContent=`That is plenty for this beaker. Press “Empty the beaker” to start again.`; return; }
+  const n0=DS.heap.length, k=g/2; for(let i=0;i<k;i++){ const tgt=heapPos(n0+i,n0+k,S.r); DS.heap.push({x:tgt.x+rnd(-1,1),y:tgt.y-150-rnd(0,6),vy:0,r:S.r,k:DS.key,fall:true}); }
+  if(add+g+10>S.max) $('#dsAdd').disabled=true; if(add+g+50>S.max) $('#dsAdd50').disabled=true; }
+const dsc=$('#dsCanvas'), dsx=dsc.getContext('2d');
+const DSN=matchMedia('(max-width:560px)');
+function dsDraw(t){ if(!sizeCv(dsc)) return; const narrow=DSN.matches, VW=narrow?176:DSW, VX=narrow?BCX-88:0, VH=narrow?176:DSH, VY=narrow?24:0, W=dsc.width, H=dsc.height, s=Math.min(W/VW,H/VH), c=dsx, ink=tok('--ink'), mut=tok('--muted'), water=tok('--p-water'), S=SOL[DS.key];
+  c.setTransform(s,0,0,s,(W-VW*s)/2-VX*s,(H-VH*s)/2-VY*s); c.clearRect(-60,-60,DSW+120,DSH+120);
+  const add=(dsDis()+DS.heap.length)*2;
+  c.fillStyle=tok('--surface-2'); c.strokeStyle=mut; c.lineWidth=1; c.beginPath(); c.roundRect(48,166,148,7,2); c.fill(); c.stroke();
+  c.fillStyle=ink; c.beginPath(); c.roundRect(62,174,120,22,4); c.fill();
+  c.fillStyle=tok('--bg'); c.font='700 11px "JetBrains Mono", monospace'; c.textAlign='center'; c.fillText((100+add).toFixed(1)+' g',BCX,189);
+  c.globalAlpha=0.16; c.fillStyle=water; c.fillRect(BK.x0,DS.top,BK.x1-BK.x0,BK.y1-DS.top); c.globalAlpha=1;
+  DS.liq.forEach(p=>{ if(p.k==='w'){ c.globalAlpha=0.45; ball(c,p.x,p.y,p.r,water,ink); } }); c.globalAlpha=1;
+  DS.liq.forEach(p=>{ if(p.k!=='w') ball(c,p.x,p.y,p.r,tok(SOL[p.k].col),ink); });
+  DS.heap.forEach(o=>ball(c,o.x,o.y,o.r,tok(SOL[o.k].col),ink));
+  c.strokeStyle=tok('--glass'); c.lineWidth=2; c.beginPath(); c.moveTo(BK.x0-1,BK.y0-8); c.lineTo(BK.x0-1,BK.y1+1); c.lineTo(BK.x1+1,BK.y1+1); c.lineTo(BK.x1+1,BK.y0-8); c.stroke();
+  if(DS.stir>0){ c.strokeStyle=mut; c.lineWidth=3; c.lineCap='round'; c.beginPath(); c.moveTo(DS.rodX+(DS.rodX-BCX)*0.15,BK.y0-22); c.lineTo(DS.rodX,BK.y1-8); c.stroke(); c.lineCap='butt'; }
+  dsSolHtml(); if(narrow){ c.setTransform(1,0,0,1,0,0); return; }
+  // solubility chart
+  const X0=212, X1=312, BW=X1-X0;
+  c.textAlign='left'; c.fillStyle=ink; c.font='700 8px "Atkinson Hyperlegible", sans-serif'; c.fillText('How much dissolves in',X0,40); c.fillText('100 g of water at 20 °C?',X0,50);
+  ['salt','sugar','sand'].forEach((k,i)=>{ const y=72+i*40, Z=SOL[k], sel=k===DS.key, f=DS.found[k];
+    c.fillStyle=sel?ink:mut; c.font=(sel?'700 ':'')+'8px "Atkinson Hyperlegible", sans-serif'; c.textAlign='left'; c.fillText((sel?'▸ ':'')+Z.name[0].toUpperCase()+Z.name.slice(1),X0,y);
+    c.textAlign='right'; c.font='7px "JetBrains Mono", monospace'; c.fillText(f?Z.capTxt:'?',X1,y);
+    c.fillStyle=tok('--surface-2'); c.strokeStyle=tok('--line'); c.lineWidth=0.6; c.beginPath(); c.roundRect(X0,y+4,BW,8,2); c.fill(); c.stroke();
+    if(f&&Z.cap>0){ c.fillStyle=tok(Z.col); c.beginPath(); c.roundRect(X0,y+4,BW*Math.min(Z.cap,220)/220,8,2); c.fill(); c.stroke(); }
+    if(sel&&add>0){ const d=dsDis()*2; c.fillStyle=tok('--xa'); c.fillRect(X0,y+14,Math.max(1,BW*Math.min(d,220)/220),3); c.fillStyle=mut; c.textAlign='left'; c.font='7px "JetBrains Mono", monospace'; c.fillText(`in your beaker: ${d} g`,X0,y+25); } });
+  c.fillStyle=mut; c.textAlign='left'; c.font='6.5px "Atkinson Hyperlegible", sans-serif'; c.fillText('Fill in each bar by finding out.',X0,194);
+  c.setTransform(1,0,0,1,0,0); }
+let DSOL='';
+function dsSolHtml(){ const d=dsDis()*2, add=(dsDis()+DS.heap.length)*2, key=['salt','sugar','sand'].map(k=>DS.found[k]?1:0).join('')+DS.key+d+add; if(key===DSOL) return; DSOL=key;
+  $('#dsSol').innerHTML='<h3>How much dissolves in 100 g of water at 20 °C?</h3>'+['salt','sugar','sand'].map(k=>{ const Z=SOL[k], f=DS.found[k], sel=k===DS.key;
+    return `<div class="sr${sel?' sel':''}"><span>${Z.name[0].toUpperCase()+Z.name.slice(1)}</span><span class="bar"><i style="width:${f?Math.min(Z.cap,220)/220*100:0}%;background:var(${Z.col})"></i></span><span class="v">${f?Z.capTxt:'?'}${sel&&add>0?` · yours: ${d} g`:''}</span></div>`; }).join(''); }
+$('#dsPick').innerHTML=Object.keys(SOL).map(k=>`<button class="chip" data-k="${k}" aria-pressed="${k===DS.key}">${SOL[k].name[0].toUpperCase()+SOL[k].name.slice(1)}</button>`).join('');
+$$('#dsPick button').forEach(b=>b.addEventListener('click',()=>{ setPressed($('#dsPick'),b); DS.key=b.dataset.k; dsInit(); }));
+$('#dsAdd').addEventListener('click',()=>dsAdd(10));
+$('#dsAdd50').addEventListener('click',()=>dsAdd(50));
+$('#dsStir').addEventListener('click',()=>{ DS.stir=2.5; });
+$('#dsReset').addEventListener('click',dsInit);
+dsInit();
+LOOPS.dissolve={tick(dt,t){ dsUpdate(dt,t); dsDraw(t); }};
+
+/* pure substance or mixture? */
+const PMX=[['diamond',1,'Diamond is only carbon. It contains just one substance, so it is pure.'],['milk',0,'Milk is mostly water, with fats, proteins and sugars mixed in.'],
+  ['sodium chloride',1,'Sodium chloride is the chemical name for salt. On its own it is one substance, so it is pure.'],['steel',0,'Steel is iron mixed with a little carbon, and sometimes other metals too.'],
+  ['distilled water',1,'Distilling removes everything that was dissolved in the water, leaving only water particles.'],['tap water',0,'Tap water looks clear, but it has small amounts of other substances dissolved in it.'],
+  ['copper',1,'Copper is an element. It contains only copper particles.'],['cola',0,'Cola is water with sugar, flavourings and carbon dioxide dissolved in it.']];
+const PMS={ans:{}};
+function pmRender(){ const host=$('#pmCards'); host.innerHTML='';
+  PMX.forEach(([n,pure,why],i)=>{ const d=document.createElement('div'), done=i in PMS.ans; d.className='scard'+(done?(PMS.ans[i]===pure?' right':' wrong'):'');
+    d.innerHTML=`<b>${n}</b>${done?`<span class="why"><b>${pure?'Pure substance.':'Mixture.'}</b> ${why}</span>`:`<div class="row"><button data-v="1">Pure</button><button data-v="0">Mixture</button></div>`}`;
+    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ PMS.ans[i]=+b.dataset.v; pmRender(); })); host.appendChild(d); });
+  $('#pmScore').textContent=`${Object.keys(PMS.ans).filter(k=>PMS.ans[k]===PMX[k][1]).length} / ${PMX.length}`; }
+pmRender();
+/* ================= STATION 6: separating mixtures ================= */
+const INK='#3b3147', WAT='var(--p-water)';
+const METH={filter:'Filtration',evap:'Evaporation',distil:'Distillation',chrom:'Chromatography',magnet:'Magnet'};
+const NOMAG='Nothing in this mixture is magnetic, so nothing is attracted to the magnet.';
+const CHROMNO='Chromatography is for finding out which dyes (colours) are in a mixture, like the dyes in ink. It cannot give you a useful amount of anything back.';
+const SMIX={
+  sandwater:{name:'Sand and water',goal:'Get the sand out and keep the water.',comp:{liq:1,solid:'sand'},n:1,
+    out:{filter:['right','The sand particles are too big to pass through the tiny holes in the filter paper, so the sand stays behind as the <b>residue</b>. The water passes through as the <b>filtrate</b>.'],
+      evap:['wrong','You would get the sand back, but all the water would evaporate into the air and be lost. You wanted to keep the water too.'],
+      distil:['meh','Distillation would keep the water and leave the sand, but boiling all that water takes a lot of energy. Sand does not dissolve, so a much simpler method works.'],
+      chrom:['wrong',CHROMNO],magnet:['wrong',NOMAG]}},
+  saltwater:{name:'Salty water',goal:'Get solid salt out of the water.',comp:{liq:1,dis:'salt'},n:1,
+    out:{filter:['wrong','The salt is <b>dissolved</b>. Its particles are spread out between the water particles and are small enough to pass straight through the filter paper. Nothing is left in the paper.'],
+      evap:['right','Heating makes the water evaporate. Salt does not evaporate, so it is left behind as crystals. For bigger crystals, heat until about half the water has gone, then leave it to cool slowly: this is <b>crystallisation</b>.'],
+      distil:['meh','Distillation would leave the salt behind, but it also collects the water, which you did not need. Evaporation is simpler.'],
+      chrom:['wrong',CHROMNO],magnet:['wrong',NOMAG]}},
+  seawater:{name:'Sea water',goal:'Get pure water that is safe to drink.',comp:{liq:1,dis:'salt'},n:1,
+    out:{filter:['wrong','The salt is dissolved, so it passes straight through the filter paper with the water. The filtrate is still salty.'],
+      evap:['wrong','Evaporation leaves the salt behind, but the water escapes into the air as water vapour. You end up with nothing to drink.'],
+      distil:['right','The water boils and turns into steam, leaving the salt behind. The steam is cooled in the <b>condenser</b> and condenses back into pure liquid water, which drips into the beaker.'],
+      chrom:['wrong',CHROMNO],magnet:['wrong',NOMAG]}},
+  ink:{name:'Black ink',goal:'Find out which colours are in the ink.',comp:{liq:1,dyes:1},n:1,
+    out:{filter:['wrong','The dyes are dissolved, so they pass straight through the filter paper. The filtrate is still black.'],
+      evap:['wrong','You would be left with a dried black smear. All the dyes stay mixed together.'],
+      distil:['wrong','You would collect colourless water, and the dyes would all be left in the flask, still mixed together.'],
+      chrom:['right','The water soaks up the paper and carries the dyes with it. Each dye travels a different distance, so the colours separate. This black ink contains yellow, red and blue dyes.'],
+      magnet:['wrong',NOMAG]}},
+  ironsand:{name:'Iron filings and sand',goal:'Get the iron out of the sand.',comp:{solid:'sand',iron:1},n:1,
+    out:{filter:['wrong','There is no liquid, so there is nothing to filter. Both solids stay in the filter paper.'],
+      evap:['wrong','There is no liquid to evaporate. Both solids stay in the basin.'],
+      distil:['wrong','There is no liquid to boil, so nothing is collected.'],
+      chrom:['wrong','Neither iron nor sand dissolves in water, so they do not move up the paper.'],
+      magnet:['right','Iron is <b>magnetic</b> and sand is not. Move a magnet over the mixture and the iron filings jump up and stick to it.']}},
+  rocksalt:{name:'Rock salt',goal:'Get pure salt. The rock salt has been crushed and stirred into warm water, so the salt has dissolved. The sand and grit have not.',comp:{liq:1,dis:'salt',solid:'sand'},n:2,
+    out:{filter:['step','<b>Step 1 done.</b> The sand and grit cannot dissolve, so they stay in the filter paper. The salt is dissolved, so it passes through in the filtrate. Now choose a method to get the salt out of the filtrate.'],
+      evap:['wrong','You would get salt, but it would be mixed with the sand and grit. Get rid of the insoluble bits first.'],
+      distil:['wrong','The salt, sand and grit would all be left in the flask together. Get rid of the insoluble bits first.'],
+      chrom:['wrong',CHROMNO],magnet:['wrong','Salt, sand and grit are not magnetic.']},
+    comp1:{liq:1,dis:'salt'},
+    out1:{filter:['wrong','You have already filtered it. The salt is dissolved, so it would pass through the filter paper again.'],
+      evap:['right','<b>Step 2 done.</b> Evaporating the water from the filtrate leaves pure salt crystals. Rock salt needs two steps: filtration, then evaporation (or crystallisation).'],
+      distil:['meh','This would leave the salt behind, but you only want the salt, so evaporation is simpler.'],
+      chrom:['wrong',CHROMNO],magnet:['wrong','Salt is not magnetic.']}}
+};
+const SP={mix:'sandwater',meth:null,t:0,step:0,solved:{},res:null};
+function srand(seed){ let a=seed>>>0; return ()=>{ a=(a+0x6D2B79F5)>>>0; let t=a; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+const svgS=$('#sepSvg');
+function g0(){ svgS.innerHTML=''; el('line',{x1:20,y1:352,x2:580,y2:352,stroke:'var(--line)','stroke-width':3,'stroke-linecap':'round'},svgS); }
+function lab(x,y,txt,anchor,px,py){ if(px!=null) el('line',{x1:px,y1:py,x2:x+(anchor==='end'?4:-4),y2:y-5,stroke:'var(--muted)','stroke-width':1.2},svgS); el('text',{x,y,'text-anchor':anchor||'start',class:'s-lab'},svgS,txt); }
+function speck(n,seed,box,col,r){ const R=srand(seed); for(let i=0;i<n;i++){ const p=box(R); el('circle',{cx:p[0],cy:p[1],r:r||2.6,fill:col,stroke:'var(--ink)','stroke-opacity':.35,'stroke-width':.6},svgS); } }
+function crystals(n,seed,x0,x1,y0,y1){ const R=srand(seed); for(let i=0;i<n;i++){ const x=lerp(x0,x1,R()), y=lerp(y0,y1,R()), s=3+R()*2.5; el('rect',{x:x-s/2,y:y-s/2,width:s,height:s,fill:'#ffffff',stroke:'var(--muted)','stroke-width':.8,transform:`rotate(${R()*40-20} ${x} ${y})`},svgS); } }
+function flame(cx,tip,base,time){ const f=Math.sin(time*13)*2.5; el('path',{d:`M${cx} ${tip+f} C${cx-11} ${tip+18},${cx-9} ${base-4},${cx} ${base} C${cx+9} ${base-4},${cx+11} ${tip+18},${cx} ${tip+f}Z`,fill:'#3d86e0',opacity:.75},svgS);
+  el('path',{d:`M${cx} ${tip+12+f*0.6} C${cx-5} ${tip+22},${cx-4} ${base-3},${cx} ${base} C${cx+4} ${base-3},${cx+5} ${tip+22},${cx} ${tip+12+f*0.6}Z`,fill:'#9fd0ff',opacity:.9},svgS); }
+function burner(cx,top){ el('rect',{x:cx-8,y:top,width:16,height:340-top,fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':1.5},svgS); el('rect',{x:cx-28,y:340,width:56,height:11,rx:3,fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':1.5},svgS); }
+function clip(id,d){ const defs=el('defs',{},svgS), cp=el('clipPath',{id},defs); el('path',{d},cp); return `url(#${id})`; }
+const liqCol=c=>c.dyes?INK:WAT, liqOp=c=>c.dyes?0.92:0.32;
+const solName=c=>c.iron?'iron and sand':SP.mix==='rocksalt'?'sand and grit':'sand';
+
+function drawIdle(c){ g0(); const d='M242 168 L242 342 Q242 350 250 350 L350 350 Q358 350 358 342 L358 168';
+  if(c.liq){ el('rect',{x:242,y:214,width:116,height:136,fill:liqCol(c),opacity:liqOp(c),'clip-path':clip('ic','M242 168 L242 342 Q242 350 250 350 L350 350 Q358 350 358 342 L358 168 Z')},svgS); }
+  if(c.solid&&c.liq) speck(26,3,R=>[250+R()*100,326+R()*20],'var(--p-sand)');
+  if(!c.liq){ speck(60,5,R=>[250+R()*100,300+R()*46],'var(--p-sand)'); if(c.iron) speck(40,7,R=>[250+R()*100,300+R()*46],'var(--p-iron)',2.2); }
+  el('path',{d,fill:'none',stroke:'var(--glass)','stroke-width':3,'stroke-linejoin':'round'},svgS);
+  el('text',{x:300,y:140,'text-anchor':'middle',class:'s-head'},svgS,SMIX[SP.mix].name);
+  if(c.dis) lab(372,250,'salt dissolved (you cannot see it)','start',356,246);
+  if(c.dyes) lab(372,250,'dyes dissolved in water','start',356,246); }
+
+function drawFilter(c,t,time){ g0(); const liq=!!c.liq, sol=!!(c.solid||c.iron);
+  const flask='M282 232 L282 262 L226 338 Q220 350 234 350 L366 350 Q380 350 374 338 L318 262 L318 232';
+  if(liq){ const yl=350-44*t; el('rect',{x:200,y:yl,width:200,height:360-yl,fill:liqCol(c),opacity:liqOp(c),'clip-path':clip('fc',flask+' Z')},svgS); }
+  el('path',{d:flask,fill:'none',stroke:'var(--glass)','stroke-width':3,'stroke-linejoin':'round'},svgS);
+  el('path',{d:'M222 116 L378 116 L308 196 L308 258 L292 258 L292 196 Z',fill:'var(--surface)','fill-opacity':.35,stroke:'var(--glass)','stroke-width':3,'stroke-linejoin':'round'},svgS);
+  el('path',{d:'M232 121 L368 121 L300 194 Z',fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':1.2,'stroke-dasharray':'4 3'},svgS);
+  const hw=y=>68*(194-y)/73;
+  if(liq){ const yl=lerp(132,188,t); if(t<0.99) el('path',{d:`M${300-hw(yl)} ${yl} L${300+hw(yl)} ${yl} L300 194Z`,fill:liqCol(c),opacity:liqOp(c)},svgS);
+    if(t<0.97) for(let k=0;k<3;k++){ const ph=(time*1.6+k/3)%1, y=262+ph*(350-44*t-262); el('circle',{cx:300,cy:y,r:3,fill:liqCol(c),opacity:c.dyes?0.9:0.6},svgS); } }
+  if(sol){ const top=liq?194-20:150; speck(liq?22:44,11,R=>{ const y=lerp(top,192,Math.sqrt(R())), w=hw(y)-4; return [300+(R()*2-1)*w,y]; },'var(--p-sand)',2.4);
+    if(c.iron) speck(26,13,R=>{ const y=lerp(top,192,Math.sqrt(R())), w=hw(y)-4; return [300+(R()*2-1)*w,y]; },'var(--p-iron)',2); }
+  lab(388,138,'filter paper','start',352,132);
+  if(sol) lab(388,182,'residue: '+solName(c),'start',314,182);
+  if(liq) lab(388,326,c.dyes?'filtrate: still black':c.dis?'filtrate: salt solution':'filtrate: water','start',364,330);
+  else lab(388,326,'nothing passes through','start',364,330);
+  if(c.dis&&!c.solid&&t>0.6) el('text',{x:300,y:100,'text-anchor':'middle',class:'s-mut'},svgS,'nothing left in the paper');
+}
+
+function drawEvap(c,t,time){ g0(); const liq=!!c.liq;
+  [[232,350,256,234],[368,350,344,234]].forEach(([a,b,cc,d])=>el('line',{x1:a,y1:b,x2:cc,y2:d,stroke:'var(--muted)','stroke-width':4,'stroke-linecap':'round'},svgS));
+  el('rect',{x:224,y:228,width:152,height:6,fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':1.5},svgS);
+  burner(300,288); flame(300,240,288,time);
+  const bowl='M232 176 Q300 274 368 176';
+  el('path',{d:bowl+' Z',fill:'var(--surface)',stroke:'none'},svgS);
+  const cp=clip('ec',bowl+' Z');
+  if(liq){ const yl=lerp(186,223,t); if(t<0.995) el('rect',{x:220,y:yl,width:160,height:60,fill:liqCol(c),opacity:liqOp(c),'clip-path':cp},svgS); }
+  if(c.solid||c.iron) speck(c.iron?30:18,17,R=>[275+R()*50,214+R()*8],'var(--p-sand)',2.4);
+  if(c.iron) speck(20,19,R=>[275+R()*50,214+R()*8],'var(--p-iron)',2);
+  if(c.dis&&t>0.55) crystals(Math.floor((t-0.55)/0.45*22),23,272,328,212,221);
+  if(c.dyes&&t>0.5) el('ellipse',{cx:300,cy:220,rx:30,ry:3.5,fill:INK,opacity:(t-0.5)*2},svgS);
+  el('path',{d:bowl,fill:'none',stroke:'var(--muted)','stroke-width':3,'stroke-linecap':'round'},svgS);
+  if(liq&&t<0.99) for(let k=0;k<4;k++){ const ph=(time*0.45+k/4)%1, y=176-ph*100, x=272+k*18+8*Math.sin(ph*7+k); el('path',{d:`M${x} ${y+16} q-6 -6 0 -12 q6 -6 0 -12`,fill:'none',stroke:'var(--muted)','stroke-width':2,'stroke-linecap':'round',opacity:(1-ph)*0.8},svgS); }
+  lab(388,186,'evaporating basin','start',364,184);
+  if(liq) el('text',{x:300,y:56,'text-anchor':'middle',class:'s-mut'},svgS,'water vapour escapes into the air');
+  if(c.dis&&t>0.7) lab(388,222,c.solid?'salt + sand left':'salt crystals','start',330,218);
+  else if(c.dyes&&t>0.7) lab(388,222,'dyes still mixed','start',332,220);
+  else if(!liq) lab(388,222,'no liquid to evaporate','start',328,218);
+}
+
+function drawDistil(c,t,time){ g0(); const liq=!!c.liq, A=[149,165], B=[452,262], L=Math.hypot(B[0]-A[0],B[1]-A[1]), u=[(B[0]-A[0])/L,(B[1]-A[1])/L], nn=[-u[1],u[0]];
+  const P=(s,o)=>[A[0]+u[0]*s+nn[0]*o, A[1]+u[1]*s+nn[1]*o], pt=p=>p[0].toFixed(1)+' '+p[1].toFixed(1);
+  burner(140,322); flame(140,302,322,time);
+  const fl='M131 204.9 A48 48 0 1 0 149 204.9';
+  if(liq){ const yl=lerp(238,288,t); if(t<0.995) el('rect',{x:90,y:yl,width:100,height:70,fill:liqCol(c),opacity:liqOp(c),'clip-path':clip('dc','M140 252 m-48 0 a48 48 0 1 0 96 0 a48 48 0 1 0 -96 0')},svgS); }
+  if(c.solid||c.iron) speck(20,29,R=>[124+R()*32,288+R()*8],'var(--p-sand)',2.4);
+  if(c.iron) speck(14,31,R=>[124+R()*32,288+R()*8],'var(--p-iron)',2);
+  if(c.dis&&t>0.6) crystals(Math.floor((t-0.6)/0.4*16),37,124,156,289,296);
+  if(c.dyes&&t>0.6) el('ellipse',{cx:140,cy:296,rx:20,ry:3,fill:INK,opacity:(t-0.6)*2.5},svgS);
+  el('path',{d:fl+' M131 204.9 L131 150 M149 204.9 L149 150',fill:'none',stroke:'var(--glass)','stroke-width':3},svgS);
+  el('rect',{x:127,y:140,width:26,height:12,rx:2,fill:'var(--muted)'},svgS);
+  el('line',{x1:140,y1:112,x2:140,y2:166,stroke:'var(--ink)','stroke-width':3},svgS); el('circle',{cx:140,cy:169,r:4,fill:'var(--p-red)'},svgS);
+  el('path',{d:`M${pt(P(70,-14))} L${pt(P(270,-14))} L${pt(P(270,14))} L${pt(P(70,14))}Z`,fill:WAT,'fill-opacity':.14,stroke:'var(--glass)','stroke-width':2.5},svgS);
+  el('path',{d:`M${pt(P(250,14))} L${pt(P(250,36))} M${pt(P(90,-14))} L${pt(P(90,-36))}`,fill:'none',stroke:'var(--glass)','stroke-width':6},svgS);
+  el('path',{d:`M${pt(P(0,-4))} L${pt(P(L,-4))} M${pt(P(0,4))} L${pt(P(L,4))}`,fill:'none',stroke:'var(--glass)','stroke-width':2},svgS);
+  const bk='M420 276 L420 344 Q420 350 426 350 L494 350 Q500 350 500 344 L500 276';
+  if(liq&&t>0.05){ const yl=350-40*(t-0.05)/0.95; el('rect',{x:420,y:yl,width:80,height:350-yl,fill:WAT,opacity:.32,'clip-path':clip('bc',bk+' Z')},svgS); }
+  el('path',{d:bk,fill:'none',stroke:'var(--glass)','stroke-width':3},svgS);
+  if(liq&&t<0.99){ const yl=lerp(238,288,t), up=yl-165;
+    for(let k=0;k<7;k++){ const ph=(time*0.55+k/7)%1, pos=ph*(up+L+60);
+      if(pos<up) el('circle',{cx:140+3*Math.sin(pos*0.3),cy:yl-pos,r:3,fill:'none',stroke:'var(--muted)','stroke-width':1.3},svgS);
+      else if(pos<up+L){ const s=pos-up, p=P(s,0), wet=s>90; el('circle',{cx:p[0],cy:p[1],r:wet?2.6:3,fill:wet?WAT:'none',stroke:wet?'none':'var(--muted)','stroke-width':1.3},svgS); }
+      else { const y=266+(pos-up-L)/60*(350-40*t-266); el('circle',{cx:452,cy:y,r:2.6,fill:WAT},svgS); } } }
+  el('text',{x:140,y:102,'text-anchor':'middle',class:'s-mut'},svgS,liq?'thermometer: '+(t>0.08?'100':'20')+' °C':'thermometer');
+  el('text',{x:322,y:184,'text-anchor':'middle',class:'s-lab'},svgS,'condenser');
+  const wi=P(250,40), wo=P(90,-40); el('text',{x:wi[0]-6,y:wi[1]+14,'text-anchor':'end',class:'s-mut'},svgS,'cold water in'); el('text',{x:wo[0],y:wo[1]-6,'text-anchor':'middle',class:'s-mut'},svgS,'water out');
+  if(liq) el('text',{x:460,y:372,'text-anchor':'middle',class:'s-lab'},svgS,'pure water'); else el('text',{x:460,y:330,'text-anchor':'middle',class:'s-mut'},svgS,'nothing collected');
+  if(t>0.7&&(c.dis||c.dyes||c.solid)) el('text',{x:140,y:372,'text-anchor':'middle',class:'s-mut'},svgS,c.dis&&c.solid?'salt + sand left':c.dis?'salt left behind':c.dyes?'dyes left behind':'sand left behind');
+}
+
+function drawChrom(c,t){ g0(); const front=lerp(318,132,t);
+  const bk='M235 110 L235 342 Q235 350 243 350 L357 350 Q365 350 365 342 L365 110';
+  el('rect',{x:235,y:318,width:130,height:32,fill:WAT,opacity:.32,'clip-path':clip('cc',bk+' Z')},svgS);
+  el('rect',{x:272,y:104,width:56,height:232,fill:'var(--surface)',stroke:'var(--line)','stroke-width':1.5},svgS);
+  el('rect',{x:272,y:front,width:56,height:336-front,fill:WAT,opacity:.13},svgS);
+  el('line',{x1:276,y1:300,x2:324,y2:300,stroke:'var(--muted)','stroke-width':1.5,'stroke-dasharray':'3 2'},svgS);
+  el('path',{d:bk,fill:'none',stroke:'var(--glass)','stroke-width':3},svgS);
+  el('line',{x1:215,y1:104,x2:385,y2:104,stroke:'var(--muted)','stroke-width':5,'stroke-linecap':'round'},svgS);
+  if(c.dyes){ el('ellipse',{cx:300,cy:300,rx:8,ry:6,fill:INK,opacity:Math.max(0,1-t*3)},svgS);
+    [['#d9b21c',.78],['#d0443a',.52],['#2f6fc4',.28]].forEach(([col,rf])=>el('ellipse',{cx:300,cy:300-rf*(300-front),rx:8,ry:6+4*t,fill:col,opacity:Math.min(1,t*3)},svgS)); }
+  else if(c.solid||c.iron){ speck(8,41,R=>[294+R()*12,296+R()*8],'var(--p-sand)',2); if(c.iron) speck(5,43,R=>[294+R()*12,296+R()*8],'var(--p-iron)',1.8); }
+  lab(378,340,'water (solvent)','start',362,336); lab(378,300,'pencil start line','start',330,300);
+  if(t>0.25) lab(378,front+4,'solvent front','start',330,front);
+  if(t>0.8&&!c.dyes) el('text',{x:300,y:80,'text-anchor':'middle',class:'s-mut'},svgS,c.dis?'no coloured spots: salt is colourless':'nothing moves up the paper');
+}
+
+function drawMagnet(c,t){ g0(); el('ellipse',{cx:300,cy:326,rx:150,ry:22,fill:'var(--surface-2)',stroke:'var(--glass)','stroke-width':2.5},svgS);
+  if(c.liq) el('ellipse',{cx:300,cy:324,rx:138,ry:15,fill:liqCol(c),opacity:liqOp(c)},svgS);
+  if(c.solid) speck(c.iron?46:24,47,R=>{ const a=R()*6.283, r=Math.sqrt(R()); return [300+Math.cos(a)*r*126,325+Math.sin(a)*r*12]; },'var(--p-sand)',2.6);
+  const my=40+150*Math.min(1,t/0.45);
+  if(c.iron){ const R=srand(53); for(let i=0;i<40;i++){ const a=R()*6.283, r=Math.sqrt(R()), sx=300+Math.cos(a)*r*126, sy=325+Math.sin(a)*r*12, tx=238+R()*124, ty=my+36+R()*9, p=clamp((t-0.5)/0.4-R()*0.25,0,1), e=p*p*(3-2*p);
+      el('circle',{cx:lerp(sx,tx,e),cy:lerp(sy,ty,e),r:2.1,fill:'var(--p-iron)',stroke:'var(--ink)','stroke-opacity':.35,'stroke-width':.6},svgS); } }
+  el('rect',{x:230,y:my,width:70,height:34,rx:3,fill:'#d0443a'},svgS); el('rect',{x:300,y:my,width:70,height:34,rx:3,fill:'#2f6fc4'},svgS);
+  el('text',{x:265,y:my+23,'text-anchor':'middle',class:'s-onfill','font-size':16},svgS,'N'); el('text',{x:335,y:my+23,'text-anchor':'middle',class:'s-onfill','font-size':16},svgS,'S');
+  if(t>0.92) el('text',{x:300,y:282,'text-anchor':'middle',class:'s-lab'},svgS,c.iron?'iron filings stick to the magnet; sand stays in the dish':'nothing is attracted');
+}
+const DRAW={filter:drawFilter,evap:drawEvap,distil:drawDistil,chrom:drawChrom,magnet:drawMagnet};
+function spComp(){ const M=SMIX[SP.mix]; return SP.mix==='rocksalt'&&SP.step===1?M.comp1:M.comp; }
+function spRender(time){ const c=SP.res?SP.res.comp:spComp(); if(!SP.meth) drawIdle(c); else DRAW[SP.meth](c,SP.t,time); }
+function spVerdict(){ const r=SP.res; if(!r) return; const [st,txt]=r.out, box=$('#spOut');
+  box.className='verdict'+(st==='right'||st==='step'?' good':st==='wrong'?' bad':'');
+  box.innerHTML=`<strong>${{right:'It works!',step:'Good first step',meh:'It works, but…',wrong:'That will not work'}[st]}</strong><span>${txt}</span>`;
+  $('#spPill').textContent=METH[SP.meth]+(st==='right'||st==='step'?' ✓':st==='wrong'?' ✗':'');
+  if(st==='step'){ SP.step=1; } if(st==='right'){ SP.solved[SP.mix]=true; $('#spMix').querySelector(`[data-k="${SP.mix}"]`).classList.add('ans-right'); }
+  $('#spScore').textContent=`${Object.keys(SP.solved).length} / 6 solved`; }
+function spRun(meth){ const M=SMIX[SP.mix], s1=SP.mix==='rocksalt'&&SP.step===1; SP.meth=meth; SP.t=0; SP.res={comp:spComp(),out:(s1?M.out1:M.out)[meth],done:false};
+  $('#spPill').textContent=METH[meth]+'…'; $('#spOut').className='verdict'; $('#spOut').innerHTML='<span class="small">Watch what happens…</span>'; setPressed($('#spMeth'),$('#spMeth').querySelector(`[data-m="${meth}"]`)); }
+function spPick(k){ SP.mix=k; SP.meth=null; SP.res=null; SP.step=0; SP.t=0; const M=SMIX[k];
+  $$('#spMix button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k)); $$('#spMeth button').forEach(b=>b.setAttribute('aria-pressed','false'));
+  $('#spName').textContent=M.name; $('#spPill').textContent=M.n===2?'Needs two steps':'Choose a method'; $('#spCap').innerHTML=`<b>Goal:</b> ${M.goal}`;
+  $('#spOut').className='verdict'; $('#spOut').innerHTML='<span class="small">What do you want to get out of the mixture? Think about which substance dissolves, which is magnetic, and which boils first.</span>'; }
+$('#spMix').innerHTML=Object.keys(SMIX).map(k=>`<button class="chip" data-k="${k}">${SMIX[k].name}</button>`).join('');
+$('#spMeth').innerHTML=Object.keys(METH).map(k=>`<button class="chip" data-m="${k}" aria-pressed="false">${METH[k]}</button>`).join('');
+$$('#spMix button').forEach(b=>b.addEventListener('click',()=>spPick(b.dataset.k)));
+$$('#spMeth button').forEach(b=>b.addEventListener('click',()=>spRun(b.dataset.m)));
+$('#spReplay').addEventListener('click',()=>{ if(!SP.res) return; if(SP.mix==='rocksalt'&&SP.res.out[0]==='step') SP.step=0; spRun(SP.meth); });
+spPick('sandwater');
+
+/* chromatography panel */
+const CR={t:0,run:false,sel:new Set(),checked:false};
+const DYES=[['A','red','#d0443a',.55],['B','yellow','#d9b21c',.80],['C','green','#2f9a55',.65],['D','blue','#2f6fc4',.30]];
+const crS=$('#chromSvg');
+function crDraw(){ crS.innerHTML=''; const t=CR.t, front=lerp(286,62,t), base=262, rf=$('#crRf').checked&&t>=1;
+  el('rect',{x:20,y:286,width:600,height:44,rx:4,fill:WAT,opacity:.25,stroke:'var(--glass)','stroke-width':2},crS);
+  el('rect',{x:40,y:20,width:560,height:280,fill:'var(--surface)',stroke:'var(--line)','stroke-width':1.5},crS);
+  el('rect',{x:40,y:front,width:560,height:300-front,fill:WAT,opacity:.12},crS);
+  el('line',{x1:44,y1:base,x2:596,y2:base,stroke:'var(--muted)','stroke-width':1.5,'stroke-dasharray':'4 3'},crS);
+  if(t>0.15){ el('line',{x1:44,y1:front,x2:596,y2:front,stroke:'var(--p-water)','stroke-width':1.2,'stroke-dasharray':'2 3'},crS); }
+  const spot=(x,y,col,ry,op)=>el('ellipse',{cx:x,cy:y,rx:11,ry,fill:col,opacity:op},crS);
+  const yOf=r=>base-r*(base-front), ry=6+4*t;
+  spot(110,base,'#2e6b4f',7,Math.max(0,1-t*3)); spot(110,yOf(.80),'#d9b21c',ry,Math.min(1,t*3)); spot(110,yOf(.30),'#2f6fc4',ry,Math.min(1,t*3));
+  DYES.forEach(([k,,col,r],i)=>spot(220+i*110,yOf(r),col,t>0?ry:7,1));
+  ['X','A','B','C','D'].forEach((k,i)=>el('text',{x:110+i*110,y:280,'text-anchor':'middle',class:'s-head'},crS,k));
+  if(rf){ el('text',{x:590,y:front-6,'text-anchor':'end',class:'s-mut'},crS,'solvent front');
+    el('line',{x1:58,y1:base,x2:58,y2:front,stroke:'var(--ink)','stroke-width':1.2},crS); el('path',{d:`M53 ${front+7} L58 ${front} L63 ${front+7}`,fill:'none',stroke:'var(--ink)','stroke-width':1.2},crS); el('text',{x:64,y:(base+front)/2,class:'s-mut'},crS,'10.0 cm');
+    [[110,.80],[110,.30],...DYES.map((d,i)=>[220+i*110,d[3]])].forEach(([x,r])=>{ const L=x>500, X=L?x-15:x+15, an=L?'end':'start'; el('text',{x:X,y:yOf(r)-1,class:'s-txt','text-anchor':an},crS,`Rf ${r.toFixed(2)}`); el('text',{x:X,y:yOf(r)+13,class:'s-mut','text-anchor':an},crS,`${(r*10).toFixed(1)} cm`); }); }
+}
+function crAnsRender(){ $('#crAns').innerHTML=DYES.map(([k,n])=>`<button class="chip" data-k="${k}" aria-pressed="${CR.sel.has(k)}">${k} (${n})</button>`).join('')+'<button class="btn" id="crCheck">Check</button>';
+  $$('#crAns .chip').forEach(b=>b.addEventListener('click',()=>{ const k=b.dataset.k; CR.sel.has(k)?CR.sel.delete(k):CR.sel.add(k); b.setAttribute('aria-pressed',CR.sel.has(k)); }));
+  $('#crCheck').addEventListener('click',crCheck); }
+function crCheck(){ if(CR.t<1){ $('#crCap').textContent='Run the paper first, then decide.'; return; }
+  const s=[...CR.sel].sort().join('');
+  $$('#crAns .chip').forEach(b=>{ b.classList.remove('ans-right','ans-wrong'); if(CR.sel.has(b.dataset.k)) b.classList.add('BD'.includes(b.dataset.k)?'ans-right':'ans-wrong'); });
+  if(s==='BD') $('#crCap').innerHTML='<b>Correct.</b> X contains dye B (yellow) and dye D (blue): its two spots are at the same heights as theirs. The pen looks green, but it contains no green dye C. Yellow and blue together look green.';
+  else $('#crCap').innerHTML='<b>Not quite.</b> A dye is in X only if one of X’s spots is at exactly the same height as that dye’s spot. '+(CR.sel.has('C')?'Dye C (green) is not level with either of X’s spots. ':'')+'X has two spots, so it contains two dyes.'; }
+$('#crGo').addEventListener('click',()=>{ if(CR.t>=1) CR.t=0; CR.run=true; $('#crGo').disabled=true; $('#crCap').textContent='The water soaks up the paper and carries the dyes with it…'; });
+$('#crReset').addEventListener('click',()=>{ CR.t=0; CR.run=false; CR.sel.clear(); $('#crGo').disabled=false; crAnsRender(); crDraw(); $('#crCap').textContent='Mystery felt-tip pen X and four known dyes. Run the paper, then tick the dyes you think are in X.'; });
+$('#crRf').addEventListener('change',()=>{ crDraw(); if($('#crRf').checked&&CR.t<1) $('#crCap').textContent='Rf values appear when the run has finished. Rf = distance moved by the dye ÷ distance moved by the solvent.'; });
+crAnsRender(); crDraw();
+LOOPS.separate={tick(dt,time){
+  if(SP.meth&&SP.t<1){ SP.t=Math.min(1,SP.t+dt/(reduceMotion?1.5:4)); if(SP.t>=1&&!SP.res.done){ SP.res.done=true; spVerdict(); } }
+  spRender(time);
+  if(CR.run){ CR.t=Math.min(1,CR.t+dt/(reduceMotion?2:6)); crDraw(); if(CR.t>=1){ CR.run=false; $('#crGo').disabled=false; $('#crGo').textContent='Run it again';
+    $('#crCap').innerHTML='Each dye has moved a different distance, so the colours have separated. X has split into <b>two</b> spots. Which known dyes are level with them? Tick them, then press Check. (The start line is in pencil because pencil does not dissolve, so it does not run up the paper.)'; } } }};
+/* ================= STATION 7: quiz ================= */
+const QUIZ=[
+  {q:'Which of these is <b>not</b> matter?',o:['Light from a torch','Air in a balloon','Steam from a kettle','Sand on a beach'],a:0,e:'Matter is anything that has mass and takes up space. Air and steam are gases, so they are matter. Light is energy: it has no mass.'},
+  {q:'Which statement about the particles in a solid is correct?',o:['They vibrate about fixed positions','They do not move at all','They are bigger than the particles in a liquid','They are spread far apart'],a:0,e:'Solid particles are held in place but are always vibrating. They are the same size as in the liquid: only their arrangement and movement change.'},
+  {q:'Why can a gas be squashed, but a solid cannot?',o:['Gas particles have big spaces between them','Gas particles are softer','Gas particles are smaller','Gas particles can be crushed'],a:0,e:'Squashing pushes the particles closer together into the empty spaces. Solid particles are already touching, so there is no space.'},
+  {q:'What happens to the particles when ice melts?',o:['They gain energy and start to slide past each other','They get bigger','They change into a different kind of particle','They stop moving'],a:0,e:'Heating gives the particles more energy. They break out of their fixed positions and slide past each other. They are still water particles, the same size as before.'},
+  {q:'What is condensing?',o:['A gas turning into a liquid','A liquid turning into a gas','A solid turning into a liquid','A liquid turning into a solid'],a:0,e:'Condensing is gas → liquid, like steam turning into drops on a cold window. Liquid → gas is evaporating or boiling.'},
+  {q:'You keep heating boiling water but the temperature stays at 100 °C. Where does the energy go?',o:['Into pulling the particles apart so they escape as a gas','Into making the particles bigger','It is destroyed','It all goes into the air around the pan'],a:0,e:'While water boils, the energy is used to overcome the forces holding the particles together, not to raise the temperature.'},
+  {q:'15 g of sugar dissolves completely in 200 g of water. What is the mass of the solution?',o:['215 g','200 g','185 g','More than 215 g'],a:0,e:'When sugar dissolves, its particles spread out between the water particles. None are lost, so the mass is 200 + 15 = 215 g.'},
+  {q:'In which of these would diffusion happen fastest?',o:['A hot gas','A cold gas','A hot liquid','A cold solid'],a:0,e:'Gas particles move fast and have lots of space, and heating makes them move even faster. Particles in a solid cannot move from place to place, so they do not diffuse.'},
+  {q:'Why can you smell cooking from another room?',o:['Smell particles move randomly and spread out from where there are lots to where there are fewer','The oven pushes the smell particles towards you','Air particles soak up the smell','Smell particles are attracted to noses'],a:0,e:'This is diffusion: the random movement of particles spreads them from an area where there are lots to an area where there are fewer.'},
+  {q:'Which of these is a mixture?',o:['Tap water','Distilled water','Oxygen','Copper'],a:0,e:'Tap water has small amounts of other substances dissolved in it. Distilled water, oxygen and copper each contain only one substance.'},
+  {q:'Which method would get pure water from sea water?',o:['Distillation','Filtration','Evaporation','Chromatography'],a:0,e:'In distillation the water boils off, leaving the salt behind, and the steam is condensed back into pure water. Filtration cannot remove dissolved salt, and evaporation loses the water into the air.'},
+  {q:'In chromatography, why is the start line drawn in pencil?',o:['Pencil does not dissolve in the solvent, so it will not run up the paper','Pencil is easier to rub out','Pen would make the dyes move faster','The line needs to be grey'],a:0,e:'Ink would dissolve and run up the paper with the dyes, giving extra spots. Pencil (graphite) does not dissolve.'}
+];
+const QS={ans:{}};
+function shuffleQ(){ QUIZ.forEach(it=>{ it.order=shuffle(it.o.map((_,i)=>i)); }); }
+function renderQuiz(){ const host=$('#quiz'); host.innerHTML='';
+  QUIZ.forEach((it,n)=>{ const d=document.createElement('div'); d.className='q';
+    d.innerHTML=`<span class="qn">Question ${n+1}</span><p class="qt">${it.q}</p><div class="opts"></div><p class="fb" hidden></p>`;
+    const opts=d.querySelector('.opts'), fb=d.querySelector('.fb');
+    it.order.forEach(oi=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=it.o[oi]; b.dataset.i=oi;
+      b.addEventListener('click',()=>{ if(n in QS.ans) return; QS.ans[n]=oi; opts.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(+x.dataset.i===it.a) x.classList.add('right'); });
+        if(oi!==it.a) b.classList.add('wrong'); fb.hidden=false; fb.innerHTML=`<b>${oi===it.a?'Correct.':'Not quite.'}</b> ${it.e}`; qScore(); });
+      opts.appendChild(b); });
+    host.appendChild(d); });
+  qScore(); }
+function qScore(){ const r=Object.keys(QS.ans).filter(k=>QS.ans[k]===QUIZ[k].a).length; $('#score').textContent=`${r} / ${QUIZ.length}`; }
+$('#quizReset').addEventListener('click',()=>{ QS.ans={}; shuffleQ(); renderQuiz(); });
+shuffleQ(); renderQuiz();
+(function(){ const h=(location.hash||'').slice(1); if(TABS.includes(h)) showTab(h); })();
+</script>
+</body>
+</html>
